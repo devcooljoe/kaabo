@@ -5,35 +5,46 @@ import '../../core/errors/failures.dart';
 import '../../domain/entities/review_entity.dart';
 import '../../domain/repositories/review_repository.dart';
 
-final reviewRepositoryProvider = Provider<ReviewRepository>((ref) => getIt<ReviewRepository>());
+final reviewRepositoryProvider = Provider<ReviewRepository>(
+  (ref) => getIt<ReviewRepository>(),
+);
 
-final propertyReviewsProvider = FutureProvider.family<List<ReviewEntity>, String>((ref, propertyId) async {
-  final repository = ref.watch(reviewRepositoryProvider);
-  final result = await repository.getPropertyReviews(propertyId);
-  return result.fold((l) => <ReviewEntity>[], (r) => r);
-});
+final propertyReviewsProvider =
+    FutureProvider.family<List<ReviewEntity>, String>((ref, propertyId) async {
+      final repository = ref.watch(reviewRepositoryProvider);
+      final result = await repository.getPropertyReviews(propertyId);
+      return result.fold((l) => <ReviewEntity>[], (r) => r);
+    });
 
-final landlordReviewsProvider = FutureProvider.family<List<ReviewEntity>, String>((ref, landlordId) async {
-  final repository = ref.watch(reviewRepositoryProvider);
-  final result = await repository.getLandlordReviews(landlordId);
-  return result.fold((l) => <ReviewEntity>[], (r) => r);
-});
+final landlordReviewsProvider =
+    FutureProvider.family<List<ReviewEntity>, String>((ref, landlordId) async {
+      final repository = ref.watch(reviewRepositoryProvider);
+      final result = await repository.getLandlordReviews(landlordId);
+      return result.fold((l) => <ReviewEntity>[], (r) => r);
+    });
 
-final propertyRatingProvider = FutureProvider.family<double, String>((ref, propertyId) async {
+final propertyRatingProvider = FutureProvider.family<double, String>((
+  ref,
+  propertyId,
+) async {
   final repository = ref.watch(reviewRepositoryProvider);
   final result = await repository.getPropertyAverageRating(propertyId);
   return result.fold((l) => 0.0, (r) => r);
 });
 
-final landlordRatingProvider = FutureProvider.family<double, String>((ref, landlordId) async {
+final landlordRatingProvider = FutureProvider.family<double, String>((
+  ref,
+  landlordId,
+) async {
   final repository = ref.watch(reviewRepositoryProvider);
   final result = await repository.getLandlordAverageRating(landlordId);
   return result.fold((l) => 0.0, (r) => r);
 });
 
-final reviewControllerProvider = StateNotifierProvider<ReviewController, AsyncValue<void>>((ref) {
-  return ReviewController(ref.watch(reviewRepositoryProvider));
-});
+final reviewControllerProvider =
+    StateNotifierProvider<ReviewController, AsyncValue<void>>((ref) {
+      return ReviewController(ref.watch(reviewRepositoryProvider));
+    });
 
 class ReviewController extends StateNotifier<AsyncValue<void>> {
   final ReviewRepository _repository;

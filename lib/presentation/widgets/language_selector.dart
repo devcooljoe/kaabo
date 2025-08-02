@@ -36,12 +36,18 @@ class LanguageSelector extends ConsumerWidget {
 
   String _getLanguageName(String code) {
     switch (code) {
-      case 'en': return 'English';
-      case 'pcm': return 'Pidgin';
-      case 'ha': return 'Hausa';
-      case 'yo': return 'Yoruba';
-      case 'ig': return 'Igbo';
-      default: return code.toUpperCase();
+      case 'en':
+        return 'English';
+      case 'pcm':
+        return 'Pidgin';
+      case 'ha':
+        return 'Hausa';
+      case 'yo':
+        return 'Yoruba';
+      case 'ig':
+        return 'Igbo';
+      default:
+        return code.toUpperCase();
     }
   }
 }

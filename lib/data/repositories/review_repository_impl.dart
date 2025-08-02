@@ -27,7 +27,10 @@ class ReviewRepositoryImpl implements ReviewRepository {
         type: review.type,
       );
 
-      await _firestore.collection('reviews').doc(review.id).set(reviewModel.toJson());
+      await _firestore
+          .collection('reviews')
+          .doc(review.id)
+          .set(reviewModel.toJson());
       await _updateAverageRating(review);
       return const Right(null);
     } catch (e) {
@@ -36,16 +39,22 @@ class ReviewRepositoryImpl implements ReviewRepository {
   }
 
   @override
-  Future<Either<Failure, List<ReviewEntity>>> getPropertyReviews(String propertyId) async {
+  Future<Either<Failure, List<ReviewEntity>>> getPropertyReviews(
+    String propertyId,
+  ) async {
     try {
-      final snapshot = await _firestore
-          .collection('reviews')
-          .where('propertyId', isEqualTo: propertyId)
-          .where('type', isEqualTo: 'property')
-          .orderBy('createdAt', descending: true)
-          .get();
+      final snapshot =
+          await _firestore
+              .collection('reviews')
+              .where('propertyId', isEqualTo: propertyId)
+              .where('type', isEqualTo: 'property')
+              .orderBy('createdAt', descending: true)
+              .get();
 
-      final reviews = snapshot.docs.map((doc) => ReviewModel.fromJson(doc.data()).toEntity()).toList();
+      final reviews =
+          snapshot.docs
+              .map((doc) => ReviewModel.fromJson(doc.data()).toEntity())
+              .toList();
       return Right(reviews);
     } catch (e) {
       return Left(ServerFailure());
@@ -53,16 +62,22 @@ class ReviewRepositoryImpl implements ReviewRepository {
   }
 
   @override
-  Future<Either<Failure, List<ReviewEntity>>> getLandlordReviews(String landlordId) async {
+  Future<Either<Failure, List<ReviewEntity>>> getLandlordReviews(
+    String landlordId,
+  ) async {
     try {
-      final snapshot = await _firestore
-          .collection('reviews')
-          .where('landlordId', isEqualTo: landlordId)
-          .where('type', isEqualTo: 'landlord')
-          .orderBy('createdAt', descending: true)
-          .get();
+      final snapshot =
+          await _firestore
+              .collection('reviews')
+              .where('landlordId', isEqualTo: landlordId)
+              .where('type', isEqualTo: 'landlord')
+              .orderBy('createdAt', descending: true)
+              .get();
 
-      final reviews = snapshot.docs.map((doc) => ReviewModel.fromJson(doc.data()).toEntity()).toList();
+      final reviews =
+          snapshot.docs
+              .map((doc) => ReviewModel.fromJson(doc.data()).toEntity())
+              .toList();
       return Right(reviews);
     } catch (e) {
       return Left(ServerFailure());
@@ -70,13 +85,16 @@ class ReviewRepositoryImpl implements ReviewRepository {
   }
 
   @override
-  Future<Either<Failure, double>> getPropertyAverageRating(String propertyId) async {
+  Future<Either<Failure, double>> getPropertyAverageRating(
+    String propertyId,
+  ) async {
     try {
-      final snapshot = await _firestore
-          .collection('reviews')
-          .where('propertyId', isEqualTo: propertyId)
-          .where('type', isEqualTo: 'property')
-          .get();
+      final snapshot =
+          await _firestore
+              .collection('reviews')
+              .where('propertyId', isEqualTo: propertyId)
+              .where('type', isEqualTo: 'property')
+              .get();
 
       if (snapshot.docs.isEmpty) return const Right(0.0);
 
@@ -92,13 +110,16 @@ class ReviewRepositoryImpl implements ReviewRepository {
   }
 
   @override
-  Future<Either<Failure, double>> getLandlordAverageRating(String landlordId) async {
+  Future<Either<Failure, double>> getLandlordAverageRating(
+    String landlordId,
+  ) async {
     try {
-      final snapshot = await _firestore
-          .collection('reviews')
-          .where('landlordId', isEqualTo: landlordId)
-          .where('type', isEqualTo: 'landlord')
-          .get();
+      final snapshot =
+          await _firestore
+              .collection('reviews')
+              .where('landlordId', isEqualTo: landlordId)
+              .where('type', isEqualTo: 'landlord')
+              .get();
 
       if (snapshot.docs.isEmpty) return const Right(0.0);
 
@@ -117,43 +138,45 @@ class ReviewRepositoryImpl implements ReviewRepository {
     if (review.type == ReviewType.property) {
       final avgResult = await getPropertyAverageRating(review.propertyId);
       final reviewCount = await _getPropertyReviewCount(review.propertyId);
-      
+
       avgResult.fold(
         (l) => null,
-        (avgRating) async => await _firestore.collection('properties').doc(review.propertyId).update({
-          'averageRating': avgRating,
-          'reviewCount': reviewCount,
-        }),
+        (avgRating) async => await _firestore
+            .collection('properties')
+            .doc(review.propertyId)
+            .update({'averageRating': avgRating, 'reviewCount': reviewCount}),
       );
     } else if (review.landlordId != null) {
       final avgResult = await getLandlordAverageRating(review.landlordId!);
       final reviewCount = await _getLandlordReviewCount(review.landlordId!);
-      
+
       avgResult.fold(
         (l) => null,
-        (avgRating) async => await _firestore.collection('users').doc(review.landlordId).update({
-          'averageRating': avgRating,
-          'reviewCount': reviewCount,
-        }),
+        (avgRating) async => await _firestore
+            .collection('users')
+            .doc(review.landlordId)
+            .update({'averageRating': avgRating, 'reviewCount': reviewCount}),
       );
     }
   }
 
   Future<int> _getPropertyReviewCount(String propertyId) async {
-    final snapshot = await _firestore
-        .collection('reviews')
-        .where('propertyId', isEqualTo: propertyId)
-        .where('type', isEqualTo: 'property')
-        .get();
+    final snapshot =
+        await _firestore
+            .collection('reviews')
+            .where('propertyId', isEqualTo: propertyId)
+            .where('type', isEqualTo: 'property')
+            .get();
     return snapshot.docs.length;
   }
 
   Future<int> _getLandlordReviewCount(String landlordId) async {
-    final snapshot = await _firestore
-        .collection('reviews')
-        .where('landlordId', isEqualTo: landlordId)
-        .where('type', isEqualTo: 'landlord')
-        .get();
+    final snapshot =
+        await _firestore
+            .collection('reviews')
+            .where('landlordId', isEqualTo: landlordId)
+            .where('type', isEqualTo: 'landlord')
+            .get();
     return snapshot.docs.length;
   }
 }

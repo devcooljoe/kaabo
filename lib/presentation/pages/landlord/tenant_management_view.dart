@@ -12,7 +12,8 @@ class TenantManagementView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(authStateProvider).value;
-    if (user == null) return const Scaffold(body: Center(child: Text('Please login')));
+    if (user == null)
+      return const Scaffold(body: Center(child: Text('Please login')));
 
     return DefaultTabController(
       length: 3,
@@ -53,16 +54,18 @@ class _ActiveTenantsTab extends ConsumerWidget {
     final tenantsAsync = ref.watch(landlordTenantsProvider(landlordId));
 
     return tenantsAsync.when(
-      data: (tenants) => tenants.isEmpty
-          ? const Center(child: Text('No active tenants'))
-          : ListView.builder(
-              padding: const EdgeInsets.all(16),
-              itemCount: tenants.length,
-              itemBuilder: (context, index) {
-                final tenant = tenants[index];
-                return _TenantCard(tenant: tenant);
-              },
-            ),
+      data:
+          (tenants) =>
+              tenants.isEmpty
+                  ? const Center(child: Text('No active tenants'))
+                  : ListView.builder(
+                    padding: const EdgeInsets.all(16),
+                    itemCount: tenants.length,
+                    itemBuilder: (context, index) {
+                      final tenant = tenants[index];
+                      return _TenantCard(tenant: tenant);
+                    },
+                  ),
       loading: () => const Center(child: CircularProgressIndicator()),
       error: (error, _) => Center(child: Text('Error: $error')),
     );
@@ -76,19 +79,23 @@ class _ApplicationsTab extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final applicationsAsync = ref.watch(pendingApplicationsProvider(landlordId));
+    final applicationsAsync = ref.watch(
+      pendingApplicationsProvider(landlordId),
+    );
 
     return applicationsAsync.when(
-      data: (applications) => applications.isEmpty
-          ? const Center(child: Text('No pending applications'))
-          : ListView.builder(
-              padding: const EdgeInsets.all(16),
-              itemCount: applications.length,
-              itemBuilder: (context, index) {
-                final application = applications[index];
-                return _ApplicationCard(application: application);
-              },
-            ),
+      data:
+          (applications) =>
+              applications.isEmpty
+                  ? const Center(child: Text('No pending applications'))
+                  : ListView.builder(
+                    padding: const EdgeInsets.all(16),
+                    itemCount: applications.length,
+                    itemBuilder: (context, index) {
+                      final application = applications[index];
+                      return _ApplicationCard(application: application);
+                    },
+                  ),
       loading: () => const Center(child: CircularProgressIndicator()),
       error: (error, _) => Center(child: Text('Error: $error')),
     );
@@ -105,16 +112,18 @@ class _OverdueTenantsTab extends ConsumerWidget {
     final overdueAsync = ref.watch(overdueTenantsProvider(landlordId));
 
     return overdueAsync.when(
-      data: (tenants) => tenants.isEmpty
-          ? const Center(child: Text('No overdue tenants'))
-          : ListView.builder(
-              padding: const EdgeInsets.all(16),
-              itemCount: tenants.length,
-              itemBuilder: (context, index) {
-                final tenant = tenants[index];
-                return _OverdueTenantCard(tenant: tenant);
-              },
-            ),
+      data:
+          (tenants) =>
+              tenants.isEmpty
+                  ? const Center(child: Text('No overdue tenants'))
+                  : ListView.builder(
+                    padding: const EdgeInsets.all(16),
+                    itemCount: tenants.length,
+                    itemBuilder: (context, index) {
+                      final tenant = tenants[index];
+                      return _OverdueTenantCard(tenant: tenant);
+                    },
+                  ),
       loading: () => const Center(child: CircularProgressIndicator()),
       error: (error, _) => Center(child: Text('Error: $error')),
     );
@@ -187,7 +196,9 @@ class _TenantCard extends StatelessWidget {
                 Expanded(
                   child: ElevatedButton(
                     onPressed: () => _recordPayment(context),
-                    style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.green,
+                    ),
                     child: const Text('Record Payment'),
                   ),
                 ),
@@ -202,40 +213,48 @@ class _TenantCard extends StatelessWidget {
   void _showPaymentHistory(BuildContext context) {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Payment History'),
-        content: SizedBox(
-          width: double.maxFinite,
-          child: ListView.builder(
-            shrinkWrap: true,
-            itemCount: tenant.paymentHistory.length,
-            itemBuilder: (context, index) {
-              final payment = tenant.paymentHistory[index];
-              return ListTile(
-                title: Text('₦${payment.amount.toStringAsFixed(0)}'),
-                subtitle: Text(DateFormat('MMM dd, yyyy').format(payment.paidDate)),
-                trailing: Icon(
-                  payment.status == PaymentStatus.paid ? Icons.check_circle : Icons.pending,
-                  color: payment.status == PaymentStatus.paid ? Colors.green : Colors.orange,
-                ),
-              );
-            },
+      builder:
+          (context) => AlertDialog(
+            title: const Text('Payment History'),
+            content: SizedBox(
+              width: double.maxFinite,
+              child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: tenant.paymentHistory.length,
+                itemBuilder: (context, index) {
+                  final payment = tenant.paymentHistory[index];
+                  return ListTile(
+                    title: Text('₦${payment.amount.toStringAsFixed(0)}'),
+                    subtitle: Text(
+                      DateFormat('MMM dd, yyyy').format(payment.paidDate),
+                    ),
+                    trailing: Icon(
+                      payment.status == PaymentStatus.paid
+                          ? Icons.check_circle
+                          : Icons.pending,
+                      color:
+                          payment.status == PaymentStatus.paid
+                              ? Colors.green
+                              : Colors.orange,
+                    ),
+                  );
+                },
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('Close'),
+              ),
+            ],
           ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Close'),
-          ),
-        ],
-      ),
     );
   }
 
   void _recordPayment(BuildContext context) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Record payment feature')),
-    );
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(const SnackBar(content: Text('Record payment feature')));
   }
 }
 
@@ -257,7 +276,9 @@ class _ApplicationCard extends ConsumerWidget {
               children: [
                 CircleAvatar(
                   backgroundColor: Colors.blue,
-                  child: Text(application.tenantName.substring(0, 2).toUpperCase()),
+                  child: Text(
+                    application.tenantName.substring(0, 2).toUpperCase(),
+                  ),
                 ),
                 const SizedBox(width: 12),
                 Expanded(
@@ -278,7 +299,10 @@ class _ApplicationCard extends ConsumerWidget {
             Row(
               children: [
                 Expanded(
-                  child: _InfoItem('Income', '₦${application.monthlyIncome.toStringAsFixed(0)}'),
+                  child: _InfoItem(
+                    'Income',
+                    '₦${application.monthlyIncome.toStringAsFixed(0)}',
+                  ),
                 ),
                 Expanded(
                   child: _InfoItem('Employer', application.employerName),
@@ -298,7 +322,9 @@ class _ApplicationCard extends ConsumerWidget {
                 Expanded(
                   child: ElevatedButton(
                     onPressed: () => _approveApplication(context, ref),
-                    style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.green,
+                    ),
                     child: const Text('Approve'),
                   ),
                 ),
@@ -313,39 +339,39 @@ class _ApplicationCard extends ConsumerWidget {
   void _showFullApplication(BuildContext context) {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text('${application.tenantName} - Application'),
-        content: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              _InfoItem('Email', application.tenantEmail),
-              _InfoItem('Phone', application.tenantPhone),
-              _InfoItem('Previous Address', application.previousAddress),
-              _InfoItem('Emergency Contact', application.emergencyContact),
+      builder:
+          (context) => AlertDialog(
+            title: Text('${application.tenantName} - Application'),
+            content: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  _InfoItem('Email', application.tenantEmail),
+                  _InfoItem('Phone', application.tenantPhone),
+                  _InfoItem('Previous Address', application.previousAddress),
+                  _InfoItem('Emergency Contact', application.emergencyContact),
+                ],
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('Close'),
+              ),
             ],
           ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Close'),
-          ),
-        ],
-      ),
     );
   }
 
   void _approveApplication(BuildContext context, WidgetRef ref) async {
-    await ref.read(tenantControllerProvider.notifier).approveApplication(
-      application.id,
-      application.propertyId,
-    );
+    await ref
+        .read(tenantControllerProvider.notifier)
+        .approveApplication(application.id, application.propertyId);
     if (context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Application approved!')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Application approved!')));
     }
   }
 }
@@ -387,7 +413,10 @@ class _OverdueTenantCard extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 4,
+                  ),
                   decoration: BoxDecoration(
                     color: Colors.red,
                     borderRadius: BorderRadius.circular(12),
@@ -444,10 +473,7 @@ class _InfoItem extends StatelessWidget {
             fontWeight: FontWeight.w500,
           ),
         ),
-        Text(
-          value,
-          style: const TextStyle(fontWeight: FontWeight.w500),
-        ),
+        Text(value, style: const TextStyle(fontWeight: FontWeight.w500)),
       ],
     );
   }

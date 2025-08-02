@@ -14,15 +14,16 @@ class LocationModel with _$LocationModel {
     double? distanceToCampus,
   }) = _LocationModel;
 
-  factory LocationModel.fromJson(Map<String, dynamic> json) => _$LocationModelFromJson(json);
+  factory LocationModel.fromJson(Map<String, dynamic> json) =>
+      _$LocationModelFromJson(json);
 }
 
 extension LocationModelX on LocationModel {
   LocationEntity toEntity() => LocationEntity(
-        latitude: latitude,
-        longitude: longitude,
-        address: address,
-        nearestCampus: nearestCampus,
-        distanceToCampus: distanceToCampus,
-      );
+    latitude: latitude,
+    longitude: longitude,
+    address: address,
+    nearestCampus: nearestCampus,
+    distanceToCampus: distanceToCampus,
+  );
 }

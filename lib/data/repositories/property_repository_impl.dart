@@ -57,7 +57,7 @@ class PropertyRepositoryImpl implements PropertyRepository {
         nearestCampus: property.nearestCampus,
         distanceFromCampus: property.distanceFromCampus,
       );
-      
+
       await _propertyService.addProperty(propertyModel);
       return const Right(null);
     } catch (e) {
@@ -89,7 +89,7 @@ class PropertyRepositoryImpl implements PropertyRepository {
         nearestCampus: property.nearestCampus,
         distanceFromCampus: property.distanceFromCampus,
       );
-      
+
       await _propertyService.updateProperty(propertyModel);
       return const Right(null);
     } catch (e) {
@@ -108,9 +108,13 @@ class PropertyRepositoryImpl implements PropertyRepository {
   }
 
   @override
-  Future<Either<Failure, List<PropertyEntity>>> getLandlordProperties(String landlordId) async {
+  Future<Either<Failure, List<PropertyEntity>>> getLandlordProperties(
+    String landlordId,
+  ) async {
     try {
-      final properties = await _propertyService.getLandlordProperties(landlordId);
+      final properties = await _propertyService.getLandlordProperties(
+        landlordId,
+      );
       return Right(properties.map((p) => p.toEntity()).toList());
     } catch (e) {
       return Left(ServerFailure());

@@ -21,7 +21,7 @@ void main() {
     test('AuthFailure should extend Failure and contain message', () {
       const message = 'Authentication failed';
       final failure = AuthFailure(message);
-      
+
       expect(failure, isA<Failure>());
       expect(failure.message, equals(message));
     });
@@ -30,21 +30,21 @@ void main() {
       const message = 'Authentication failed';
       final failure1 = AuthFailure(message);
       final failure2 = AuthFailure(message);
-      
+
       expect(failure1, equals(failure2));
     });
 
     test('AuthFailure should have correct props', () {
       const message = 'Authentication failed';
       final failure = AuthFailure(message);
-      
+
       expect(failure.props, equals([message]));
     });
 
     test('Different AuthFailures should not be equal', () {
       final failure1 = AuthFailure('Message 1');
       final failure2 = AuthFailure('Message 2');
-      
+
       expect(failure1, isNot(equals(failure2)));
     });
   });

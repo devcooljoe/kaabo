@@ -17,18 +17,19 @@ class UserModel with _$UserModel {
     @Default(0) int reviewCount,
   }) = _UserModel;
 
-  factory UserModel.fromJson(Map<String, dynamic> json) => _$UserModelFromJson(json);
+  factory UserModel.fromJson(Map<String, dynamic> json) =>
+      _$UserModelFromJson(json);
 }
 
 extension UserModelX on UserModel {
   UserEntity toEntity() => UserEntity(
-        id: id,
-        email: email,
-        name: name,
-        phone: phone,
-        type: type,
-        createdAt: createdAt,
-        averageRating: averageRating,
-        reviewCount: reviewCount,
-      );
+    id: id,
+    email: email,
+    name: name,
+    phone: phone,
+    type: type,
+    createdAt: createdAt,
+    averageRating: averageRating,
+    reviewCount: reviewCount,
+  );
 }

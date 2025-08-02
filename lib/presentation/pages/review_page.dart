@@ -122,7 +122,9 @@ class _ReviewPageState extends ConsumerState<ReviewPage> {
         type: widget.reviewType,
       );
 
-      await ref.read(reviewControllerProvider.notifier).addReview(review.toEntity());
+      await ref
+          .read(reviewControllerProvider.notifier)
+          .addReview(review.toEntity());
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(

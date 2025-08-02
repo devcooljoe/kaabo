@@ -11,9 +11,13 @@ class LocalizationService {
 
   Future<void> load(String languageCode) async {
     _currentLanguage = languageCode;
-    final jsonString = await rootBundle.loadString('assets/i18n/$languageCode.json');
+    final jsonString = await rootBundle.loadString(
+      'assets/i18n/$languageCode.json',
+    );
     final Map<String, dynamic> jsonMap = json.decode(jsonString);
-    _localizedStrings = jsonMap.map((key, value) => MapEntry(key, value.toString()));
+    _localizedStrings = jsonMap.map(
+      (key, value) => MapEntry(key, value.toString()),
+    );
   }
 
   String translate(String key) {
@@ -24,9 +28,13 @@ class LocalizationService {
 
   static Future<void> loadStatic(String languageCode) async {
     _currentLanguage = languageCode;
-    final jsonString = await rootBundle.loadString('assets/i18n/$languageCode.json');
+    final jsonString = await rootBundle.loadString(
+      'assets/i18n/$languageCode.json',
+    );
     final Map<String, dynamic> jsonMap = json.decode(jsonString);
-    _localizedStrings = jsonMap.map((key, value) => MapEntry(key, value.toString()));
+    _localizedStrings = jsonMap.map(
+      (key, value) => MapEntry(key, value.toString()),
+    );
   }
 
   static String translateStatic(String key) {
@@ -36,9 +44,10 @@ class LocalizationService {
   static String get currentLanguageStatic => _currentLanguage;
 }
 
-final localizationProvider = StateNotifierProvider<LocalizationNotifier, String>((ref) {
-  return LocalizationNotifier();
-});
+final localizationProvider =
+    StateNotifierProvider<LocalizationNotifier, String>((ref) {
+      return LocalizationNotifier();
+    });
 
 class LocalizationNotifier extends StateNotifier<String> {
   LocalizationNotifier() : super(AppConstants.defaultLanguage) {

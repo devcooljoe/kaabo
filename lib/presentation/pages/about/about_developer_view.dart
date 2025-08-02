@@ -31,23 +31,36 @@ class AboutDeveloperView extends StatelessWidget {
               child: Icon(Icons.person, size: 60, color: Colors.white),
             ),
             const SizedBox(height: 24),
-            
+
             Text(
               DeveloperInfo.name,
-              style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.green),
+              style: const TextStyle(
+                fontSize: 28,
+                fontWeight: FontWeight.bold,
+                color: Colors.green,
+              ),
             ),
             const SizedBox(height: 8),
-            
-            const Text('Software Engineer & Mobile App Developer', style: TextStyle(fontSize: 16, color: Colors.grey)),
+
+            const Text(
+              'Software Engineer & Mobile App Developer',
+              style: TextStyle(fontSize: 16, color: Colors.grey),
+            ),
             const SizedBox(height: 32),
-            
+
             Card(
               child: Padding(
                 padding: const EdgeInsets.all(16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text('Project Information', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                    const Text(
+                      'Project Information',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                     const SizedBox(height: 16),
                     Text(DeveloperInfo.projectName),
                     const SizedBox(height: 8),
@@ -57,26 +70,32 @@ class AboutDeveloperView extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 16),
-            
+
             Card(
               child: Padding(
                 padding: const EdgeInsets.all(16),
                 child: Column(
                   children: [
-                    const Text('Contact Information', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                    const Text(
+                      'Contact Information',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                     const SizedBox(height: 16),
-                    
+
                     ListTile(
                       leading: const Icon(Icons.email, color: Colors.green),
                       title: Text(DeveloperInfo.email),
                     ),
-                    
+
                     const ListTile(
                       leading: Icon(Icons.work, color: Colors.blue),
                       title: Text('LinkedIn Profile'),
                       subtitle: Text('Professional Network'),
                     ),
-                    
+
                     const ListTile(
                       leading: Icon(Icons.code, color: Colors.black),
                       title: Text('GitHub Profile'),
@@ -87,7 +106,7 @@ class AboutDeveloperView extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 32),
-            
+
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
@@ -99,7 +118,14 @@ class AboutDeveloperView extends StatelessWidget {
                 children: [
                   Icon(Icons.warning, color: Colors.red, size: 32),
                   SizedBox(height: 8),
-                  Text('Copyright Notice', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.red)),
+                  Text(
+                    'Copyright Notice',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.red,
+                    ),
+                  ),
                   SizedBox(height: 8),
                   Text(
                     'This software is protected by copyright law. Unauthorized copying, modification, distribution, or use is strictly prohibited without explicit written permission from Joseph Onipede.',

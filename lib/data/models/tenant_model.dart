@@ -39,9 +39,10 @@ class TenantModel {
         (e) => e.toString() == 'TenantStatus.${map['status']}',
         orElse: () => TenantStatus.active,
       ),
-      paymentHistory: (map['paymentHistory'] as List? ?? [])
-          .map((p) => PaymentRecord.fromMap(p))
-          .toList(),
+      paymentHistory:
+          (map['paymentHistory'] as List? ?? [])
+              .map((p) => PaymentRecord.fromMap(p))
+              .toList(),
       createdAt: DateTime.parse(map['createdAt']),
     );
   }
@@ -103,4 +104,5 @@ class PaymentRecord {
 }
 
 enum TenantStatus { active, overdue, terminated }
+
 enum PaymentStatus { paid, pending, overdue }

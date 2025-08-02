@@ -8,6 +8,7 @@ import 'package:kaabo/presentation/providers/auth_provider.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockAuthRepository extends Mock implements AuthRepository {}
+
 class FakeUserEntity extends Fake implements UserEntity {}
 
 void main() {

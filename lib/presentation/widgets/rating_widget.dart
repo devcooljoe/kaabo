@@ -23,10 +23,8 @@ class RatingWidget extends StatelessWidget {
       children: [
         RatingBarIndicator(
           rating: rating,
-          itemBuilder: (context, index) => const Icon(
-            Icons.star,
-            color: Colors.amber,
-          ),
+          itemBuilder:
+              (context, index) => const Icon(Icons.star, color: Colors.amber),
           itemCount: 5,
           itemSize: size,
           direction: Axis.horizontal,
@@ -35,10 +33,7 @@ class RatingWidget extends StatelessWidget {
           const SizedBox(width: 4),
           Text(
             '${rating.toStringAsFixed(1)} ($reviewCount ${'reviews'.tr})',
-            style: TextStyle(
-              fontSize: size * 0.8,
-              color: Colors.grey.shade600,
-            ),
+            style: TextStyle(fontSize: size * 0.8, color: Colors.grey.shade600),
           ),
         ],
       ],
@@ -86,10 +81,8 @@ class _RatingInputState extends State<RatingInput> {
           allowHalfRating: true,
           itemCount: 5,
           itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
-          itemBuilder: (context, _) => const Icon(
-            Icons.star,
-            color: Colors.amber,
-          ),
+          itemBuilder:
+              (context, _) => const Icon(Icons.star, color: Colors.amber),
           onRatingUpdate: (rating) {
             setState(() => _rating = rating);
             widget.onRatingChanged(rating);
@@ -98,10 +91,7 @@ class _RatingInputState extends State<RatingInput> {
         const SizedBox(height: 4),
         Text(
           _getRatingText(_rating),
-          style: TextStyle(
-            fontSize: 14,
-            color: Colors.grey.shade600,
-          ),
+          style: TextStyle(fontSize: 14, color: Colors.grey.shade600),
         ),
       ],
     );

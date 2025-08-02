@@ -19,7 +19,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
   @override
   Widget build(BuildContext context) {
     final authState = ref.watch(authControllerProvider);
-    
+
     // Listen for auth state changes and navigate
     ref.listen(authStateProvider, (previous, next) {
       next.whenData((user) {

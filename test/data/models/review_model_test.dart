@@ -78,7 +78,7 @@ void main() {
       );
 
       expect(reviewModelNoLandlord.landlordId, isNull);
-      
+
       final entity = reviewModelNoLandlord.toEntity();
       expect(entity.landlordId, isNull);
     });

@@ -27,15 +27,9 @@ class _CampusFilterWidgetState extends State<CampusFilterWidget> {
         prefixIcon: const Icon(Icons.school),
       ),
       items: [
-        DropdownMenuItem<String>(
-          value: null,
-          child: Text('All Areas'),
-        ),
+        DropdownMenuItem<String>(value: null, child: Text('All Areas')),
         ...AppConstants.universities.keys.map((campus) {
-          return DropdownMenuItem<String>(
-            value: campus,
-            child: Text(campus),
-          );
+          return DropdownMenuItem<String>(value: campus, child: Text(campus));
         }),
       ],
       onChanged: widget.onCampusChanged,

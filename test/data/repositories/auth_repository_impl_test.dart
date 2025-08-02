@@ -8,6 +8,7 @@ import 'package:kaabo/data/models/user_model.dart';
 import 'package:kaabo/domain/entities/user_entity.dart';
 
 class MockAuthRemoteDataSource extends Mock implements AuthRemoteDataSource {}
+
 class FakeUserModel extends Fake implements UserModel {}
 
 void main() {
@@ -43,8 +44,9 @@ void main() {
 
   group('signIn', () {
     test('should return UserEntity when sign in is successful', () async {
-      when(() => mockRemoteDataSource.signIn(any(), any()))
-          .thenAnswer((_) async => tUserModel);
+      when(
+        () => mockRemoteDataSource.signIn(any(), any()),
+      ).thenAnswer((_) async => tUserModel);
 
       final result = await repository.signIn('test@test.com', 'password');
 
@@ -53,8 +55,9 @@ void main() {
     });
 
     test('should return AuthFailure when sign in fails', () async {
-      when(() => mockRemoteDataSource.signIn(any(), any()))
-          .thenThrow(Exception('Sign in failed'));
+      when(
+        () => mockRemoteDataSource.signIn(any(), any()),
+      ).thenThrow(Exception('Sign in failed'));
 
       final result = await repository.signIn('test@test.com', 'password');
 
@@ -68,8 +71,9 @@ void main() {
 
   group('signUp', () {
     test('should return UserEntity when sign up is successful', () async {
-      when(() => mockRemoteDataSource.signUp(any(), any()))
-          .thenAnswer((_) async => tUserModel);
+      when(
+        () => mockRemoteDataSource.signUp(any(), any()),
+      ).thenAnswer((_) async => tUserModel);
 
       final result = await repository.signUp(tUserEntity, 'password');
 
@@ -77,8 +81,9 @@ void main() {
     });
 
     test('should return AuthFailure when sign up fails', () async {
-      when(() => mockRemoteDataSource.signUp(any(), any()))
-          .thenThrow(Exception('Sign up failed'));
+      when(
+        () => mockRemoteDataSource.signUp(any(), any()),
+      ).thenThrow(Exception('Sign up failed'));
 
       final result = await repository.signUp(tUserEntity, 'password');
 
@@ -101,8 +106,9 @@ void main() {
     });
 
     test('should return AuthFailure when sign out fails', () async {
-      when(() => mockRemoteDataSource.signOut())
-          .thenThrow(Exception('Sign out failed'));
+      when(
+        () => mockRemoteDataSource.signOut(),
+      ).thenThrow(Exception('Sign out failed'));
 
       final result = await repository.signOut();
 
@@ -116,8 +122,9 @@ void main() {
 
   group('getCurrentUser', () {
     test('should return UserEntity when user exists', () async {
-      when(() => mockRemoteDataSource.getCurrentUser())
-          .thenAnswer((_) async => tUserModel);
+      when(
+        () => mockRemoteDataSource.getCurrentUser(),
+      ).thenAnswer((_) async => tUserModel);
 
       final result = await repository.getCurrentUser();
 
@@ -125,8 +132,9 @@ void main() {
     });
 
     test('should return null when no user exists', () async {
-      when(() => mockRemoteDataSource.getCurrentUser())
-          .thenAnswer((_) async => null);
+      when(
+        () => mockRemoteDataSource.getCurrentUser(),
+      ).thenAnswer((_) async => null);
 
       final result = await repository.getCurrentUser();
 

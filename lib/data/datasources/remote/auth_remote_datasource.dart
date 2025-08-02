@@ -51,20 +51,20 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   @override
   Future<UserModel> signUp(UserModel user, String password) async {
     print('SignUp - Creating Firebase Auth user for: ${user.email}');
-    
+
     final credential = await _firebaseAuth.createUserWithEmailAndPassword(
       email: user.email,
       password: password,
     );
-    
+
     print('SignUp - Firebase Auth user created: ${credential.user!.uid}');
-    
+
     final newUser = user.copyWith(id: credential.user!.uid);
     print('SignUp - Saving user to Firestore: ${newUser.toJson()}');
-    
+
     await _firestore.collection('users').doc(newUser.id).set(newUser.toJson());
     print('SignUp - User saved successfully to Firestore');
-    
+
     return newUser;
   }
 

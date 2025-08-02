@@ -29,8 +29,10 @@ final routerProvider = Provider<GoRouter>((ref) {
               state.matchedLocation == '/login' ||
               state.matchedLocation == '/signup';
           final isSplash = state.matchedLocation == '/splash';
-          
-          log('Router redirect - User: ${user?.email}, Location: ${state.matchedLocation}, LoggedIn: $isLoggedIn');
+
+          log(
+            'Router redirect - User: ${user?.email}, Location: ${state.matchedLocation}, LoggedIn: $isLoggedIn',
+          );
 
           if (isSplash) {
             return isLoggedIn ? '/' : '/login';
@@ -40,7 +42,9 @@ final routerProvider = Provider<GoRouter>((ref) {
           return null;
         },
         loading: () {
-          log('Router redirect - Auth loading, Location: ${state.matchedLocation}');
+          log(
+            'Router redirect - Auth loading, Location: ${state.matchedLocation}',
+          );
           return state.matchedLocation == '/splash' ? null : '/splash';
         },
         error: (_, __) {

@@ -124,7 +124,9 @@ class KaaboApp extends ConsumerWidget {
                     onTap: () {
                       Navigator.pop(context);
                       Future.microtask(() async {
-                        await ref.read(authControllerProvider.notifier).signOut();
+                        await ref
+                            .read(authControllerProvider.notifier)
+                            .signOut();
                       });
                     },
                   ),

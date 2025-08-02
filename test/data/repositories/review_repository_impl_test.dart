@@ -17,7 +17,8 @@ class MockQuerySnapshot extends Mock
 class MockDocumentReference extends Mock
     implements DocumentReference<Map<String, dynamic>> {}
 
-class FakeDocumentReference extends Fake implements DocumentReference<Map<String, dynamic>> {}
+class FakeDocumentReference extends Fake
+    implements DocumentReference<Map<String, dynamic>> {}
 
 void main() {
   setUpAll(() {
@@ -81,9 +82,12 @@ void main() {
           ),
         ).thenReturn(mockCollection);
         when(
-          () => mockCollection.where('type', isEqualTo: any(named: 'isEqualTo')),
+          () =>
+              mockCollection.where('type', isEqualTo: any(named: 'isEqualTo')),
         ).thenReturn(mockCollection);
-        when(() => mockCollection.get()).thenAnswer((_) async => mockQuerySnapshot);
+        when(
+          () => mockCollection.get(),
+        ).thenAnswer((_) async => mockQuerySnapshot);
         when(() => mockQuerySnapshot.docs).thenReturn([]);
 
         final result = await repository.addReview(tReviewEntity);
@@ -127,7 +131,9 @@ void main() {
           descending: any(named: 'descending'),
         ),
       ).thenReturn(mockCollection);
-      when(() => mockCollection.get()).thenAnswer((_) async => mockQuerySnapshot);
+      when(
+        () => mockCollection.get(),
+      ).thenAnswer((_) async => mockQuerySnapshot);
       when(() => mockQuerySnapshot.docs).thenReturn([]);
 
       final result = await repository.getPropertyReviews('prop1');
@@ -164,7 +170,9 @@ void main() {
       when(
         () => mockCollection.where('type', isEqualTo: any(named: 'isEqualTo')),
       ).thenReturn(mockCollection);
-      when(() => mockCollection.get()).thenAnswer((_) async => mockQuerySnapshot);
+      when(
+        () => mockCollection.get(),
+      ).thenAnswer((_) async => mockQuerySnapshot);
       when(() => mockQuerySnapshot.docs).thenReturn([]);
 
       final result = await repository.getPropertyAverageRating('prop1');

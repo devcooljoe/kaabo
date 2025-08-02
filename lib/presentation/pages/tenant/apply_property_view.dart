@@ -56,7 +56,8 @@ class _ApplyPropertyViewState extends ConsumerState<ApplyPropertyView> {
                   labelText: 'Occupation',
                   border: OutlineInputBorder(),
                 ),
-                validator: (value) => value?.isEmpty ?? true ? 'Required' : null,
+                validator:
+                    (value) => value?.isEmpty ?? true ? 'Required' : null,
               ),
               const SizedBox(height: 16),
               TextFormField(
@@ -79,7 +80,8 @@ class _ApplyPropertyViewState extends ConsumerState<ApplyPropertyView> {
                   labelText: 'Employer Name',
                   border: OutlineInputBorder(),
                 ),
-                validator: (value) => value?.isEmpty ?? true ? 'Required' : null,
+                validator:
+                    (value) => value?.isEmpty ?? true ? 'Required' : null,
               ),
               const SizedBox(height: 16),
               TextFormField(
@@ -89,7 +91,8 @@ class _ApplyPropertyViewState extends ConsumerState<ApplyPropertyView> {
                   labelText: 'Previous Address',
                   border: OutlineInputBorder(),
                 ),
-                validator: (value) => value?.isEmpty ?? true ? 'Required' : null,
+                validator:
+                    (value) => value?.isEmpty ?? true ? 'Required' : null,
               ),
               const SizedBox(height: 16),
               TextFormField(
@@ -98,7 +101,8 @@ class _ApplyPropertyViewState extends ConsumerState<ApplyPropertyView> {
                   labelText: 'Emergency Contact',
                   border: OutlineInputBorder(),
                 ),
-                validator: (value) => value?.isEmpty ?? true ? 'Required' : null,
+                validator:
+                    (value) => value?.isEmpty ?? true ? 'Required' : null,
               ),
               const SizedBox(height: 24),
               Container(
@@ -133,9 +137,13 @@ class _ApplyPropertyViewState extends ConsumerState<ApplyPropertyView> {
                     foregroundColor: Colors.white,
                     padding: const EdgeInsets.symmetric(vertical: 16),
                   ),
-                  child: tenantState.isLoading
-                      ? const CircularProgressIndicator(color: Colors.white)
-                      : const Text('Submit Application', style: TextStyle(fontSize: 18)),
+                  child:
+                      tenantState.isLoading
+                          ? const CircularProgressIndicator(color: Colors.white)
+                          : const Text(
+                            'Submit Application',
+                            style: TextStyle(fontSize: 18),
+                          ),
                 ),
               ),
             ],
@@ -167,8 +175,10 @@ class _ApplyPropertyViewState extends ConsumerState<ApplyPropertyView> {
         appliedAt: DateTime.now(),
       );
 
-      await ref.read(tenantControllerProvider.notifier).submitApplication(application);
-      
+      await ref
+          .read(tenantControllerProvider.notifier)
+          .submitApplication(application);
+
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Application submitted successfully!')),

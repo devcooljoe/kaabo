@@ -7,11 +7,20 @@ import 'package:kaabo/domain/entities/property_entity.dart';
 import 'package:kaabo/core/services/cloudinary_service.dart';
 
 class MockFirebaseFirestore extends Mock implements FirebaseFirestore {}
+
 class MockCloudinaryService extends Mock implements CloudinaryService {}
-class MockCollectionReference extends Mock implements CollectionReference<Map<String, dynamic>> {}
-class MockQuerySnapshot extends Mock implements QuerySnapshot<Map<String, dynamic>> {}
-class MockDocumentReference extends Mock implements DocumentReference<Map<String, dynamic>> {}
-class MockDocumentSnapshot extends Mock implements DocumentSnapshot<Map<String, dynamic>> {}
+
+class MockCollectionReference extends Mock
+    implements CollectionReference<Map<String, dynamic>> {}
+
+class MockQuerySnapshot extends Mock
+    implements QuerySnapshot<Map<String, dynamic>> {}
+
+class MockDocumentReference extends Mock
+    implements DocumentReference<Map<String, dynamic>> {}
+
+class MockDocumentSnapshot extends Mock
+    implements DocumentSnapshot<Map<String, dynamic>> {}
 
 void main() {
   late PropertyService propertyService;
@@ -34,10 +43,18 @@ void main() {
 
   group('getProperties', () {
     test('should return list of properties when successful', () async {
-      when(() => mockFirestore.collection('properties')).thenReturn(mockCollection);
-      when(() => mockCollection.where('isAvailable', isEqualTo: any(named: 'isEqualTo')))
-          .thenReturn(mockCollection);
-      when(() => mockCollection.get()).thenAnswer((_) async => mockQuerySnapshot);
+      when(
+        () => mockFirestore.collection('properties'),
+      ).thenReturn(mockCollection);
+      when(
+        () => mockCollection.where(
+          'isAvailable',
+          isEqualTo: any(named: 'isEqualTo'),
+        ),
+      ).thenReturn(mockCollection);
+      when(
+        () => mockCollection.get(),
+      ).thenAnswer((_) async => mockQuerySnapshot);
       when(() => mockQuerySnapshot.docs).thenReturn([]);
 
       final result = await propertyService.getProperties();
@@ -47,12 +64,21 @@ void main() {
     });
 
     test('should filter by state when provided', () async {
-      when(() => mockFirestore.collection('properties')).thenReturn(mockCollection);
-      when(() => mockCollection.where('isAvailable', isEqualTo: any(named: 'isEqualTo')))
-          .thenReturn(mockCollection);
-      when(() => mockCollection.where('state', isEqualTo: any(named: 'isEqualTo')))
-          .thenReturn(mockCollection);
-      when(() => mockCollection.get()).thenAnswer((_) async => mockQuerySnapshot);
+      when(
+        () => mockFirestore.collection('properties'),
+      ).thenReturn(mockCollection);
+      when(
+        () => mockCollection.where(
+          'isAvailable',
+          isEqualTo: any(named: 'isEqualTo'),
+        ),
+      ).thenReturn(mockCollection);
+      when(
+        () => mockCollection.where('state', isEqualTo: any(named: 'isEqualTo')),
+      ).thenReturn(mockCollection);
+      when(
+        () => mockCollection.get(),
+      ).thenAnswer((_) async => mockQuerySnapshot);
       when(() => mockQuerySnapshot.docs).thenReturn([]);
 
       await propertyService.getProperties(state: 'Lagos');
@@ -61,12 +87,11 @@ void main() {
     });
 
     test('should throw exception when Firestore fails', () async {
-      when(() => mockFirestore.collection('properties')).thenThrow(Exception('Firestore error'));
+      when(
+        () => mockFirestore.collection('properties'),
+      ).thenThrow(Exception('Firestore error'));
 
-      expect(
-        () => propertyService.getProperties(),
-        throwsA(isA<Exception>()),
-      );
+      expect(() => propertyService.getProperties(), throwsA(isA<Exception>()));
     });
   });
 
@@ -90,7 +115,9 @@ void main() {
         createdAt: DateTime(2024, 1, 1),
       );
 
-      when(() => mockFirestore.collection('properties')).thenReturn(mockCollection);
+      when(
+        () => mockFirestore.collection('properties'),
+      ).thenReturn(mockCollection);
       when(() => mockCollection.doc(any())).thenReturn(mockDocumentReference);
       when(() => mockDocumentReference.set(any())).thenAnswer((_) async {});
 
@@ -118,7 +145,9 @@ void main() {
         createdAt: DateTime(2024, 1, 1),
       );
 
-      when(() => mockFirestore.collection('properties')).thenThrow(Exception('Add failed'));
+      when(
+        () => mockFirestore.collection('properties'),
+      ).thenThrow(Exception('Add failed'));
 
       expect(
         () => propertyService.addProperty(property),
@@ -129,7 +158,9 @@ void main() {
 
   group('deleteProperty', () {
     test('should delete property successfully', () async {
-      when(() => mockFirestore.collection('properties')).thenReturn(mockCollection);
+      when(
+        () => mockFirestore.collection('properties'),
+      ).thenReturn(mockCollection);
       when(() => mockCollection.doc(any())).thenReturn(mockDocumentReference);
       when(() => mockDocumentReference.delete()).thenAnswer((_) async {});
 
@@ -139,7 +170,9 @@ void main() {
     });
 
     test('should throw exception when deleting property fails', () async {
-      when(() => mockFirestore.collection('properties')).thenThrow(Exception('Delete failed'));
+      when(
+        () => mockFirestore.collection('properties'),
+      ).thenThrow(Exception('Delete failed'));
 
       expect(
         () => propertyService.deleteProperty('1'),

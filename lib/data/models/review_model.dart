@@ -18,19 +18,20 @@ class ReviewModel with _$ReviewModel {
     required ReviewType type,
   }) = _ReviewModel;
 
-  factory ReviewModel.fromJson(Map<String, dynamic> json) => _$ReviewModelFromJson(json);
+  factory ReviewModel.fromJson(Map<String, dynamic> json) =>
+      _$ReviewModelFromJson(json);
 }
 
 extension ReviewModelX on ReviewModel {
   ReviewEntity toEntity() => ReviewEntity(
-        id: id,
-        propertyId: propertyId,
-        landlordId: landlordId,
-        reviewerId: reviewerId,
-        reviewerName: reviewerName,
-        rating: rating,
-        comment: comment,
-        createdAt: createdAt,
-        type: type,
-      );
+    id: id,
+    propertyId: propertyId,
+    landlordId: landlordId,
+    reviewerId: reviewerId,
+    reviewerName: reviewerName,
+    rating: rating,
+    comment: comment,
+    createdAt: createdAt,
+    type: type,
+  );
 }

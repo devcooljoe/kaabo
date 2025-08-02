@@ -8,6 +8,7 @@ import 'package:kaabo/data/models/property_model.dart';
 import 'package:kaabo/domain/entities/property_entity.dart';
 
 class MockPropertyService extends Mock implements PropertyService {}
+
 class FakePropertyModel extends Fake implements PropertyModel {}
 
 void main() {
@@ -43,8 +44,9 @@ void main() {
 
   group('getProperties', () {
     test('should return list of properties when successful', () async {
-      when(() => mockPropertyService.getProperties())
-          .thenAnswer((_) async => [tPropertyModel]);
+      when(
+        () => mockPropertyService.getProperties(),
+      ).thenAnswer((_) async => [tPropertyModel]);
 
       final result = await repository.getProperties();
 
@@ -56,8 +58,9 @@ void main() {
     });
 
     test('should return ServerFailure when service fails', () async {
-      when(() => mockPropertyService.getProperties())
-          .thenThrow(Exception('Service error'));
+      when(
+        () => mockPropertyService.getProperties(),
+      ).thenThrow(Exception('Service error'));
 
       final result = await repository.getProperties();
 
@@ -70,19 +73,24 @@ void main() {
   });
 
   group('addProperty', () {
-    test('should return Right(null) when property is added successfully', () async {
-      when(() => mockPropertyService.addProperty(any()))
-          .thenAnswer((_) async {});
+    test(
+      'should return Right(null) when property is added successfully',
+      () async {
+        when(
+          () => mockPropertyService.addProperty(any()),
+        ).thenAnswer((_) async {});
 
-      final result = await repository.addProperty(tPropertyModel.toEntity());
+        final result = await repository.addProperty(tPropertyModel.toEntity());
 
-      expect(result, equals(const Right(null)));
-      verify(() => mockPropertyService.addProperty(any())).called(1);
-    });
+        expect(result, equals(const Right(null)));
+        verify(() => mockPropertyService.addProperty(any())).called(1);
+      },
+    );
 
     test('should return ServerFailure when adding property fails', () async {
-      when(() => mockPropertyService.addProperty(any()))
-          .thenThrow(Exception('Add failed'));
+      when(
+        () => mockPropertyService.addProperty(any()),
+      ).thenThrow(Exception('Add failed'));
 
       final result = await repository.addProperty(tPropertyModel.toEntity());
 
@@ -95,19 +103,24 @@ void main() {
   });
 
   group('deleteProperty', () {
-    test('should return Right(null) when property is deleted successfully', () async {
-      when(() => mockPropertyService.deleteProperty(any()))
-          .thenAnswer((_) async {});
+    test(
+      'should return Right(null) when property is deleted successfully',
+      () async {
+        when(
+          () => mockPropertyService.deleteProperty(any()),
+        ).thenAnswer((_) async {});
 
-      final result = await repository.deleteProperty('1');
+        final result = await repository.deleteProperty('1');
 
-      expect(result, equals(const Right(null)));
-      verify(() => mockPropertyService.deleteProperty('1')).called(1);
-    });
+        expect(result, equals(const Right(null)));
+        verify(() => mockPropertyService.deleteProperty('1')).called(1);
+      },
+    );
 
     test('should return ServerFailure when deleting property fails', () async {
-      when(() => mockPropertyService.deleteProperty(any()))
-          .thenThrow(Exception('Delete failed'));
+      when(
+        () => mockPropertyService.deleteProperty(any()),
+      ).thenThrow(Exception('Delete failed'));
 
       final result = await repository.deleteProperty('1');
 

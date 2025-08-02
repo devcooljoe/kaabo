@@ -16,7 +16,7 @@ class FirebaseAuthHelper {
       );
     }
   }
-  
+
   static void handleAuthStateChanges() {
     FirebaseAuth.instance.authStateChanges().listen((User? user) {
       if (user == null) {

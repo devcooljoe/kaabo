@@ -305,7 +305,9 @@ class _AddPropertyViewState extends ConsumerState<AddPropertyView> {
         createdAt: DateTime.now(),
       );
 
-      await ref.read(propertyControllerProvider.notifier).addProperty(property.toEntity());
+      await ref
+          .read(propertyControllerProvider.notifier)
+          .addProperty(property.toEntity());
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(

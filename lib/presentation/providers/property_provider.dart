@@ -7,15 +7,24 @@ import '../../domain/entities/property_entity.dart';
 import '../../domain/entities/property_filter.dart';
 import '../../domain/repositories/property_repository.dart';
 
-final propertyRepositoryProvider = Provider<PropertyRepository>((ref) => getIt<PropertyRepository>());
+final propertyRepositoryProvider = Provider<PropertyRepository>(
+  (ref) => getIt<PropertyRepository>(),
+);
 
-final propertiesProvider = FutureProvider.family<List<PropertyEntity>, PropertyFilter?>((ref, filter) async {
-  final repository = ref.watch(propertyRepositoryProvider);
-  final result = await repository.getProperties();
-  return result.fold((l) => <PropertyEntity>[], (r) => r);
-});
+final propertiesProvider =
+    FutureProvider.family<List<PropertyEntity>, PropertyFilter?>((
+      ref,
+      filter,
+    ) async {
+      final repository = ref.watch(propertyRepositoryProvider);
+      final result = await repository.getProperties();
+      return result.fold((l) => <PropertyEntity>[], (r) => r);
+    });
 
-final propertyProvider = FutureProvider.family<PropertyModel?, String>((ref, id) async {
+final propertyProvider = FutureProvider.family<PropertyModel?, String>((
+  ref,
+  id,
+) async {
   final repository = ref.watch(propertyRepositoryProvider);
   final result = await repository.getProperty(id);
   return result.fold(
@@ -44,15 +53,20 @@ final propertyProvider = FutureProvider.family<PropertyModel?, String>((ref, id)
   );
 });
 
-final landlordPropertiesProvider = FutureProvider.family<List<PropertyEntity>, String>((ref, landlordId) async {
-  final repository = ref.watch(propertyRepositoryProvider);
-  final result = await repository.getLandlordProperties(landlordId);
-  return result.fold((l) => <PropertyEntity>[], (r) => r);
-});
+final landlordPropertiesProvider =
+    FutureProvider.family<List<PropertyEntity>, String>((
+      ref,
+      landlordId,
+    ) async {
+      final repository = ref.watch(propertyRepositoryProvider);
+      final result = await repository.getLandlordProperties(landlordId);
+      return result.fold((l) => <PropertyEntity>[], (r) => r);
+    });
 
-final propertyControllerProvider = StateNotifierProvider<PropertyController, AsyncValue<void>>((ref) {
-  return PropertyController(ref.watch(propertyRepositoryProvider));
-});
+final propertyControllerProvider =
+    StateNotifierProvider<PropertyController, AsyncValue<void>>((ref) {
+      return PropertyController(ref.watch(propertyRepositoryProvider));
+    });
 
 class PropertyController extends StateNotifier<AsyncValue<void>> {
   final PropertyRepository _repository;

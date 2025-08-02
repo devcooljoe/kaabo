@@ -25,16 +25,16 @@ class ReviewEntity extends Equatable {
 
   @override
   List<Object?> get props => [
-        id,
-        propertyId,
-        landlordId,
-        reviewerId,
-        reviewerName,
-        rating,
-        comment,
-        createdAt,
-        type,
-      ];
+    id,
+    propertyId,
+    landlordId,
+    reviewerId,
+    reviewerName,
+    rating,
+    comment,
+    createdAt,
+    type,
+  ];
 }
 
 enum ReviewType { property, landlord }
