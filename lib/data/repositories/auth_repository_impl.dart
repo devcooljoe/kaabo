@@ -1,5 +1,7 @@
 import 'package:dartz/dartz.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:injectable/injectable.dart';
+
 import '../../core/errors/failures.dart';
 import '../../domain/entities/user_entity.dart';
 import '../../domain/repositories/auth_repository.dart';
@@ -13,17 +15,27 @@ class AuthRepositoryImpl implements AuthRepository {
   AuthRepositoryImpl(this._remoteDataSource);
 
   @override
-  Future<Either<Failure, UserEntity>> signIn(String email, String password) async {
+  Future<Either<Failure, UserEntity>> signIn(
+    String email,
+    String password,
+  ) async {
     try {
       final user = await _remoteDataSource.signIn(email, password);
       return Right(user.toEntity());
-    } catch (e) {
+    } on FirebaseAuthException catch (e) {
+      return Left(AuthFailure('Authentication failed: ${e.message}'));
+    } on Exception catch (e) {
       return Left(AuthFailure(e.toString()));
+    } catch (e) {
+      return Left(AuthFailure('Unexpected error: ${e.toString()}'));
     }
   }
 
   @override
-  Future<Either<Failure, UserEntity>> signUp(UserEntity user, String password) async {
+  Future<Either<Failure, UserEntity>> signUp(
+    UserEntity user,
+    String password,
+  ) async {
     try {
       final userModel = UserModel(
         id: user.id,
@@ -35,7 +47,7 @@ class AuthRepositoryImpl implements AuthRepository {
         averageRating: user.averageRating,
         reviewCount: user.reviewCount,
       );
-      
+
       final result = await _remoteDataSource.signUp(userModel, password);
       return Right(result.toEntity());
     } catch (e) {
@@ -61,5 +73,10 @@ class AuthRepositoryImpl implements AuthRepository {
     } catch (e) {
       return Left(AuthFailure(e.toString()));
     }
+  }
+
+  @override
+  Stream<User?> authStateChanges() {
+    return _remoteDataSource.authStateChanges();
   }
 }

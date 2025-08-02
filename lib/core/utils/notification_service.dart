@@ -1,86 +1,49 @@
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+// import 'package:firebase_messaging/firebase_messaging.dart';
+// import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+// import 'package:injectable/injectable.dart';
 
-class NotificationService {
-  static final FlutterLocalNotificationsPlugin _localNotifications =
-      FlutterLocalNotificationsPlugin();
-  static final FirebaseMessaging _firebaseMessaging =
-      FirebaseMessaging.instance;
+// @injectable
+// class NotificationService {
+//   final FlutterLocalNotificationsPlugin _localNotifications;
+//   final FirebaseMessaging _firebaseMessaging;
 
-  static Future<void> initialize() async {
-    await _firebaseMessaging.requestPermission(
-      alert: true,
-      badge: true,
-      sound: true,
-    );
+//   NotificationService(this._localNotifications, this._firebaseMessaging);
 
-    const androidSettings = AndroidInitializationSettings(
-      '@mipmap/ic_launcher',
-    );
-    const iosSettings = DarwinInitializationSettings();
-    const initSettings = InitializationSettings(
-      android: androidSettings,
-      iOS: iosSettings,
-    );
+//   static Future<void> initialize() async {
+//     // Static initialization method remains for app startup
+//   }
 
-    await _localNotifications.initialize(initSettings);
+//   Future<void> showLocalNotification({
+//     required String title,
+//     required String body,
+//     String? payload,
+//   }) async {
+//     const androidDetails = AndroidNotificationDetails(
+//       'kaabo_channel',
+//       'Kaabo Notifications',
+//       channelDescription: 'Property and rental notifications',
+//       importance: Importance.high,
+//       priority: Priority.high,
+//     );
 
-    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+//     const iosDetails = DarwinNotificationDetails();
+//     const details = NotificationDetails(
+//       android: androidDetails,
+//       iOS: iosDetails,
+//     );
 
-    FirebaseMessaging.onMessage.listen(_handleForegroundMessage);
-  }
+//     await _localNotifications.show(0, title, body, details, payload: payload);
+//   }
 
-  static Future<void> showLocalNotification({
-    required String title,
-    required String body,
-    String? payload,
-  }) async {
-    const androidDetails = AndroidNotificationDetails(
-      'kaabo_channel',
-      'Kaabo Notifications',
-      channelDescription: 'Property and rental notifications',
-      importance: Importance.high,
-      priority: Priority.high,
-    );
+//   Future<void> subscribeToTopic(String topic) async {
+//     await _firebaseMessaging.subscribeToTopic(topic);
+//   }
 
-    const iosDetails = DarwinNotificationDetails();
-    const details = NotificationDetails(
-      android: androidDetails,
-      iOS: iosDetails,
-    );
+//   Future<void> unsubscribeFromTopic(String topic) async {
+//     await _firebaseMessaging.unsubscribeFromTopic(topic);
+//   }
 
-    await _localNotifications.show(0, title, body, details, payload: payload);
-  }
-
-  static Future<void> subscribeToTopic(String topic) async {
-    await _firebaseMessaging.subscribeToTopic(topic);
-  }
-
-  static Future<void> unsubscribeFromTopic(String topic) async {
-    await _firebaseMessaging.unsubscribeFromTopic(topic);
-  }
-
-  static Future<String?> getToken() async {
-    return await _firebaseMessaging.getToken();
-  }
-}
-
-@pragma('vm:entry-point')
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  await NotificationService.showLocalNotification(
-    title: message.notification?.title ?? 'Kaabo',
-    body: message.notification?.body ?? 'New notification',
-  );
-}
-
-void _handleForegroundMessage(RemoteMessage message) {
-  NotificationService.showLocalNotification(
-    title: message.notification?.title ?? 'Kaabo',
-    body: message.notification?.body ?? 'New notification',
-  );
-}
-
-final notificationProvider = Provider<NotificationService>((ref) {
-  return NotificationService();
-});
+//   Future<String?> getToken() async {
+//     return await _firebaseMessaging.getToken();
+//   }
+// }

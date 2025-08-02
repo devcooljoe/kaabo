@@ -1,3 +1,9 @@
+/*
+ * Kaabo - Enterprise Property Rental Platform
+ * Copyright (c) 2025 Joseph Onipede (onipedejoseph2018@gmail.com)
+ * Developer: Joseph Onipede | Email: onipedejoseph2018@gmail.com
+ */
+
 import 'package:equatable/equatable.dart';
 import 'package:kaabo/data/models/property_model.dart';
 

@@ -3,5 +3,6 @@
   "flutterTools.displayGetxContextMenu": false,
   "flutterTools.displayMobxContextMenu": false,
   "flutterTools.displayRiverpodContextMenu": true,
-  "flutterTools.displayModularContextMenu": false
+  "flutterTools.displayModularContextMenu": false,
+  "java.configuration.updateBuildConfiguration": "disabled"
 }

@@ -1,24 +1,39 @@
 import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:injectable/injectable.dart';
 import '../constants/app_constants.dart';
 
+@injectable
 class LocalizationService {
   static Map<String, String> _localizedStrings = {};
   static String _currentLanguage = AppConstants.defaultLanguage;
 
-  static Future<void> load(String languageCode) async {
+  Future<void> load(String languageCode) async {
     _currentLanguage = languageCode;
     final jsonString = await rootBundle.loadString('assets/i18n/$languageCode.json');
     final Map<String, dynamic> jsonMap = json.decode(jsonString);
     _localizedStrings = jsonMap.map((key, value) => MapEntry(key, value.toString()));
   }
 
-  static String translate(String key) {
+  String translate(String key) {
     return _localizedStrings[key] ?? key;
   }
 
-  static String get currentLanguage => _currentLanguage;
+  String get currentLanguage => _currentLanguage;
+
+  static Future<void> loadStatic(String languageCode) async {
+    _currentLanguage = languageCode;
+    final jsonString = await rootBundle.loadString('assets/i18n/$languageCode.json');
+    final Map<String, dynamic> jsonMap = json.decode(jsonString);
+    _localizedStrings = jsonMap.map((key, value) => MapEntry(key, value.toString()));
+  }
+
+  static String translateStatic(String key) {
+    return _localizedStrings[key] ?? key;
+  }
+
+  static String get currentLanguageStatic => _currentLanguage;
 }
 
 final localizationProvider = StateNotifierProvider<LocalizationNotifier, String>((ref) {
@@ -38,10 +53,10 @@ class LocalizationNotifier extends StateNotifier<String> {
   }
 
   Future<void> _loadLanguage(String languageCode) async {
-    await LocalizationService.load(languageCode);
+    await LocalizationService.loadStatic(languageCode);
   }
 }
 
 extension StringExtension on String {
-  String get tr => LocalizationService.translate(this);
+  String get tr => LocalizationService.translateStatic(this);
 }

@@ -1,28 +1,65 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:dartz/dartz.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import '../../core/di/injection.dart';
 import '../../core/errors/failures.dart';
 import '../../domain/entities/user_entity.dart';
 import '../../domain/repositories/auth_repository.dart';
 
-final authRepositoryProvider = Provider<AuthRepository>((ref) => getIt<AuthRepository>());
+final authRepositoryProvider = Provider<AuthRepository>(
+  (ref) => getIt<AuthRepository>(),
+);
 
-final authStateProvider = StreamProvider<UserEntity?>((ref) async* {
+final authStateProvider = StreamProvider<UserEntity?>((ref) {
   final repository = ref.watch(authRepositoryProvider);
-  final result = await repository.getCurrentUser();
-  yield result.fold((l) => null, (r) => r);
+  return repository.authStateChanges().asyncMap((firebaseUser) async {
+    print('Auth state change - Firebase user: ${firebaseUser?.email}');
+
+    if (firebaseUser == null) {
+      print('Auth state - No user, returning null');
+      return null;
+    }
+
+    // Try to get user data from Firestore
+    final result = await repository.getCurrentUser();
+
+    return result.fold(
+      (failure) {
+        print('Auth state - Firestore failed: ${failure.toString()}');
+        return null;
+      },
+      (user) {
+        print('Auth state - Got user from Firestore: ${user?.email}');
+        return user;
+      },
+    );
+  });
 });
 
-final authControllerProvider = StateNotifierProvider<AuthController, AsyncValue<void>>((ref) {
-  return AuthController(ref.watch(authRepositoryProvider));
+// Current user provider for easy access
+final currentUserProvider = Provider<UserEntity?>((ref) {
+  final authState = ref.watch(authStateProvider);
+  return authState.when(
+    data: (user) => user,
+    loading: () => null,
+    error: (_, __) => null,
+  );
 });
+
+final authControllerProvider =
+    StateNotifierProvider<AuthController, AsyncValue<void>>((ref) {
+      return AuthController(ref.watch(authRepositoryProvider));
+    });
 
 class AuthController extends StateNotifier<AsyncValue<void>> {
   final AuthRepository _repository;
 
   AuthController(this._repository) : super(const AsyncValue.data(null));
 
-  Future<Either<Failure, UserEntity>> signIn(String email, String password) async {
+  Future<Either<Failure, UserEntity>> signIn(
+    String email,
+    String password,
+  ) async {
     state = const AsyncValue.loading();
     final result = await _repository.signIn(email, password);
     result.fold(
@@ -32,7 +69,10 @@ class AuthController extends StateNotifier<AsyncValue<void>> {
     return result;
   }
 
-  Future<Either<Failure, UserEntity>> signUp(UserEntity user, String password) async {
+  Future<Either<Failure, UserEntity>> signUp(
+    UserEntity user,
+    String password,
+  ) async {
     state = const AsyncValue.loading();
     final result = await _repository.signUp(user, password);
     result.fold(

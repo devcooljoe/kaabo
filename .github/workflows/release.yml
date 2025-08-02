@@ -1,0 +1,47 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.29.3'
+        channel: 'stable'
+    
+    - name: Setup Java
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'zulu'
+        java-version: '17'
+    
+    - name: Get dependencies
+      run: flutter pub get
+    
+    - name: Run tests
+      run: flutter test
+    
+    - name: Build APK
+      run: flutter build apk --release
+    
+    - name: Build App Bundle
+      run: flutter build appbundle --release
+    
+    - name: Create Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: |
+          build/app/outputs/flutter-apk/app-release.apk
+          build/app/outputs/bundle/release/app-release.aab
+        generate_release_notes: true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

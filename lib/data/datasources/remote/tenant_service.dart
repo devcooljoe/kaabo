@@ -1,10 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:injectable/injectable.dart';
 
 import '../../../data/models/rental_application_model.dart';
 import '../../../data/models/tenant_model.dart';
 
+@injectable
 class TenantService {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseFirestore _firestore;
+
+  TenantService(this._firestore);
 
   Future<List<TenantModel>> getLandlordTenants(String landlordId) async {
     try {

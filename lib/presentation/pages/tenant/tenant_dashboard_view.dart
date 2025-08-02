@@ -345,9 +345,17 @@ class TenantDashboardView extends ConsumerWidget {
               children: [
                 Text('Need help? Contact us:'),
                 SizedBox(height: 8),
-                Text('Email: support@kaabo.com'),
-                Text('Phone: +234 800 KAABO'),
-                Text('WhatsApp: +234 800 52226'),
+                Text('Email: onipdejoseph2018@gmail.com'),
+                Text('Phone: +2348105902536'),
+                Text('WhatsApp: +2348105902536'),
+                SizedBox(height: 16),
+                Divider(),
+                Text(
+                  'Developer Contact:',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                Text('Joseph Onipede'),
+                Text('onipedejoseph2018@gmail.com'),
               ],
             ),
             actions: [

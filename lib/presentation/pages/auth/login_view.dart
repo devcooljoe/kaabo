@@ -19,6 +19,15 @@ class _LoginViewState extends ConsumerState<LoginView> {
   @override
   Widget build(BuildContext context) {
     final authState = ref.watch(authControllerProvider);
+    
+    // Listen for auth state changes and navigate
+    ref.listen(authStateProvider, (previous, next) {
+      next.whenData((user) {
+        if (user != null) {
+          context.go('/');
+        }
+      });
+    });
 
     return Scaffold(
       body: SafeArea(
@@ -104,9 +113,32 @@ class _LoginViewState extends ConsumerState<LoginView> {
 
   void _signIn() async {
     if (_formKey.currentState!.validate()) {
-      await ref
+      final result = await ref
           .read(authControllerProvider.notifier)
           .signIn(_emailController.text.trim(), _passwordController.text);
+
+      if (mounted) {
+        result.fold(
+          (failure) {
+            print('Login failed: ${failure.toString()}');
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Login failed: ${failure.toString()}'),
+                backgroundColor: Colors.red,
+              ),
+            );
+          },
+          (user) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Login successful!'),
+                backgroundColor: Colors.green,
+              ),
+            );
+            context.go('/');
+          },
+        );
+      }
     }
   }
 

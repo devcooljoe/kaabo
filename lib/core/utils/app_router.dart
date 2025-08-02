@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kaabo/domain/entities/review_entity.dart';
@@ -9,25 +12,46 @@ import 'package:kaabo/presentation/pages/property/add_property_view.dart';
 import 'package:kaabo/presentation/pages/property/property_detail_view.dart';
 import 'package:kaabo/presentation/pages/property/property_list_view.dart';
 import 'package:kaabo/presentation/pages/review_page.dart';
+import 'package:kaabo/presentation/pages/splash/splash_view.dart';
 import 'package:kaabo/presentation/pages/tenant/apply_property_view.dart';
 import 'package:kaabo/presentation/providers/auth_provider.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
-  final authState = ref.watch(authStateProvider);
-
   return GoRouter(
-    initialLocation: '/',
+    initialLocation: '/splash',
     redirect: (context, state) {
-      final isLoggedIn = authState.value != null;
-      final isLoggingIn =
-          state.matchedLocation == '/login' ||
-          state.matchedLocation == '/signup';
+      final authState = ref.read(authStateProvider);
 
-      if (!isLoggedIn && !isLoggingIn) return '/login';
-      if (isLoggedIn && isLoggingIn) return '/';
-      return null;
+      return authState.when(
+        data: (user) {
+          final isLoggedIn = user != null;
+          final isAuthRoute =
+              state.matchedLocation == '/login' ||
+              state.matchedLocation == '/signup';
+          final isSplash = state.matchedLocation == '/splash';
+          
+          log('Router redirect - User: ${user?.email}, Location: ${state.matchedLocation}, LoggedIn: $isLoggedIn');
+
+          if (isSplash) {
+            return isLoggedIn ? '/' : '/login';
+          }
+          if (!isLoggedIn && !isAuthRoute) return '/login';
+          if (isLoggedIn && isAuthRoute) return '/';
+          return null;
+        },
+        loading: () {
+          log('Router redirect - Auth loading, Location: ${state.matchedLocation}');
+          return state.matchedLocation == '/splash' ? null : '/splash';
+        },
+        error: (_, __) {
+          log('Router redirect - Auth error');
+          return '/login';
+        },
+      );
     },
+    refreshListenable: _AuthStateListener(ref),
     routes: [
+      GoRoute(path: '/splash', builder: (context, state) => const SplashView()),
       GoRoute(path: '/', builder: (context, state) => const HomeView()),
       GoRoute(path: '/login', builder: (context, state) => const LoginView()),
       GoRoute(path: '/signup', builder: (context, state) => const SignupView()),
@@ -72,3 +96,13 @@ final routerProvider = Provider<GoRouter>((ref) {
     ],
   );
 });
+
+class _AuthStateListener extends ChangeNotifier {
+  _AuthStateListener(this.ref) {
+    ref.listen(authStateProvider, (previous, next) {
+      notifyListeners();
+    });
+  }
+
+  final Ref ref;
+}

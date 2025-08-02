@@ -1,11 +1,16 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:injectable/injectable.dart';
 import 'package:kaabo/domain/entities/user_entity.dart';
+
 import '../../../data/models/user_model.dart';
 
+@injectable
 class AuthService {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseAuth _auth;
+  final FirebaseFirestore _firestore;
+
+  AuthService(this._auth, this._firestore);
 
   User? get currentUser => _auth.currentUser;
   Stream<User?> get authStateChanges => _auth.authStateChanges();
@@ -51,10 +56,12 @@ class AuthService {
     required String password,
   }) async {
     try {
-      await _auth.signInWithEmailAndPassword(
+      final user = await _auth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
+
+      // Authentication successful
       return await getCurrentUserData();
     } catch (e) {
       throw Exception('Sign in failed: $e');
@@ -65,13 +72,14 @@ class AuthService {
     if (currentUser == null) return null;
 
     try {
-      final doc = await _firestore
-          .collection('users')
-          .doc(currentUser!.uid)
-          .get();
+      final doc =
+          await _firestore.collection('users').doc(currentUser!.uid).get();
 
-      if (doc.exists) {
-        return UserModel.fromJson(doc.data()!);
+      if (doc.exists && doc.data() != null) {
+        final data = doc.data()!;
+        if (data is Map<String, dynamic>) {
+          return UserModel.fromJson(data);
+        }
       }
     } catch (e) {
       throw Exception('Failed to get user data: $e');

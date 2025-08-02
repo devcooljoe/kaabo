@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -23,6 +25,17 @@ class _SignupViewState extends ConsumerState<SignupView> {
   @override
   Widget build(BuildContext context) {
     final authState = ref.watch(authControllerProvider);
+
+    // Listen for auth state changes and navigate
+    ref.listen(authStateProvider, (previous, next) {
+      print('Signup - Auth state changed: ${next.value?.email}');
+      next.whenData((user) {
+        if (user != null) {
+          print('Signup - Navigating to home for user: ${user.email}');
+          context.go('/');
+        }
+      });
+    });
 
     return Scaffold(
       appBar: AppBar(title: const Text('Sign Up')),
@@ -145,9 +158,32 @@ class _SignupViewState extends ConsumerState<SignupView> {
         createdAt: DateTime.now(),
       );
 
-      await ref
+      final result = await ref
           .read(authControllerProvider.notifier)
           .signUp(user, _passwordController.text);
+
+      if (mounted) {
+        result.fold(
+          (failure) {
+            log(failure.toString());
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Signup failed: ${failure.toString()}'),
+                backgroundColor: Colors.red,
+              ),
+            );
+          },
+          (user) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Signup successful!'),
+                backgroundColor: Colors.green,
+              ),
+            );
+            context.go('/');
+          },
+        );
+      }
     }
   }
 

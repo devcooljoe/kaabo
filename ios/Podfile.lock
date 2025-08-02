@@ -1030,8 +1030,6 @@ PODS:
     - nanopb (< 2.30911.0, >= 2.30908.0)
   - FirebaseSharedSwift (10.29.0)
   - Flutter (1.0.0)
-  - flutter_local_notifications (0.0.1):
-    - Flutter
   - geocoding_ios (1.0.5):
     - Flutter
   - geolocator_apple (1.2.0):
@@ -1179,7 +1177,6 @@ DEPENDENCIES:
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - firebase_messaging (from `.symlinks/plugins/firebase_messaging/ios`)
   - Flutter (from `Flutter`)
-  - flutter_local_notifications (from `.symlinks/plugins/flutter_local_notifications/ios`)
   - geocoding_ios (from `.symlinks/plugins/geocoding_ios/ios`)
   - geolocator_apple (from `.symlinks/plugins/geolocator_apple/darwin`)
   - google_maps_flutter_ios (from `.symlinks/plugins/google_maps_flutter_ios/ios`)
@@ -1225,8 +1222,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/firebase_messaging/ios"
   Flutter:
     :path: Flutter
-  flutter_local_notifications:
-    :path: ".symlinks/plugins/flutter_local_notifications/ios"
   geocoding_ios:
     :path: ".symlinks/plugins/geocoding_ios/ios"
   geolocator_apple:
@@ -1259,7 +1254,6 @@ SPEC CHECKSUMS:
   FirebaseMessaging: 88950ba9485052891ebe26f6c43a52bb62248952
   FirebaseSharedSwift: 20530f495084b8d840f78a100d8c5ee613375f6e
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
-  flutter_local_notifications: ad39620c743ea4c15127860f4b5641649a988100
   geocoding_ios: 86f1c479822f07a2f79f7094f2b753d1e9e20215
   geolocator_apple: ab36aa0e8b7d7a2d7639b3b4e48308394e8cef5e
   Google-Maps-iOS-Utils: 66d6de12be1ce6d3742a54661e7a79cb317a9321
@@ -1278,6 +1272,6 @@ SPEC CHECKSUMS:
   RecaptchaInterop: 7d1a4a01a6b2cb1610a47ef3f85f0c411434cb21
   sqflite_darwin: 20b2a3a3b70e43edae938624ce550a3cbf66a3d0
 
-PODFILE CHECKSUM: e30f02f9d1c72c47bb6344a0a748c9d268180865
+PODFILE CHECKSUM: 29848892ff22b3016beadf80ae4888512c020bc4
 
 COCOAPODS: 1.16.2

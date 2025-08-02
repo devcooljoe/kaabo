@@ -12,7 +12,12 @@
           "package_name": "com.example.kaabo"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "398590469395-example.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyCKksaKH42EiqyICeftIVXbUmU6Dnl5X6Y"
@@ -20,7 +25,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "398590469395-example.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

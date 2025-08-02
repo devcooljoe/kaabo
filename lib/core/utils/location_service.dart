@@ -2,10 +2,12 @@ import 'dart:math';
 
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:injectable/injectable.dart';
 
 import '../../../data/models/location_model.dart';
 import '../constants/app_constants.dart';
 
+@injectable
 class LocationService {
   static Future<Position?> getCurrentLocation() async {
     bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
