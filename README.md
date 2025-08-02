@@ -1,6 +1,6 @@
 # Kaabo - Enterprise Property Rental Platform
 
-**Developed by [Joseph Onipede] - Software Engineer**
+**Developed by Joseph Onipede - Software Engineer**
 
 A production-ready, scalable property rental platform built with Flutter and Firebase, featuring advanced geo-filtering, multi-language support, and comprehensive tenant management systems. This project demonstrates enterprise-level mobile app development with clean architecture principles.
 
@@ -120,10 +120,10 @@ flutter run
 
 **[Your Name]** - Software Engineer
 
-- 📧 Email: [onipedejoseph2018@@gmail.com]
-- 💼 LinkedIn: [https://www.linkedin.com/in/devcooljoe]
-- 🐙 GitHub: [https://github.com/devcooljoe]
+- 📧 Email: onipedejoseph2018@@gmail.com
+- 💼 LinkedIn: https://www.linkedin.com/in/devcooljoe
+- 🐙 GitHub: https://github.com/devcooljoe
 
 ---
 
-**© 2025 [Joseph Onipede]. All rights reserved. This project showcases professional mobile app development capabilities.**
+**© 2025 Joseph Onipede. All rights reserved. This project showcases professional mobile app development capabilities.**
