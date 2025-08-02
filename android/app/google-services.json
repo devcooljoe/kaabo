@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "398590469395",
+    "project_id": "kaabo-361cc",
+    "storage_bucket": "kaabo-361cc.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:398590469395:android:7954c273a618be792be6e6",
+        "android_client_info": {
+          "package_name": "com.example.kaabo"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCKksaKH42EiqyICeftIVXbUmU6Dnl5X6Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
