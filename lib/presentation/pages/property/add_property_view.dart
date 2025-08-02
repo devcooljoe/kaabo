@@ -126,8 +126,9 @@ class _AddPropertyViewState extends ConsumerState<AddPropertyView> {
                         border: OutlineInputBorder(),
                       ),
                       validator: (value) {
-                        if (value?.isEmpty ?? true)
+                        if (value?.isEmpty ?? true) {
                           return 'Location is required';
+                        }
                         return null;
                       },
                     ),

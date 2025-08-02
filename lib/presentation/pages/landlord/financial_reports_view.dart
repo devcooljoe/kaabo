@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+
 import '../../../data/models/tenant_model.dart';
 import '../../providers/auth_provider.dart';
 import '../../providers/tenant_provider.dart';
@@ -11,7 +12,9 @@ class FinancialReportsView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(authStateProvider).value;
-    if (user == null) return const Scaffold(body: Center(child: Text('Please login')));
+    if (user == null) {
+      return const Scaffold(body: Center(child: Text('Please login')));
+    }
 
     final tenantsAsync = ref.watch(landlordTenantsProvider(user.id));
 
@@ -22,21 +25,22 @@ class FinancialReportsView extends ConsumerWidget {
         foregroundColor: Colors.white,
       ),
       body: tenantsAsync.when(
-        data: (tenants) => SingleChildScrollView(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildOverviewCards(tenants),
-              const SizedBox(height: 24),
-              _buildMonthlyIncomeChart(tenants),
-              const SizedBox(height: 24),
-              _buildPaymentStatusBreakdown(tenants),
-              const SizedBox(height: 24),
-              _buildRecentTransactions(tenants),
-            ],
-          ),
-        ),
+        data:
+            (tenants) => SingleChildScrollView(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildOverviewCards(tenants),
+                  const SizedBox(height: 24),
+                  _buildMonthlyIncomeChart(tenants),
+                  const SizedBox(height: 24),
+                  _buildPaymentStatusBreakdown(tenants),
+                  const SizedBox(height: 24),
+                  _buildRecentTransactions(tenants),
+                ],
+              ),
+            ),
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (error, _) => Center(child: Text('Error: $error')),
       ),
@@ -44,11 +48,15 @@ class FinancialReportsView extends ConsumerWidget {
   }
 
   Widget _buildOverviewCards(List<TenantModel> tenants) {
-    final totalMonthlyIncome = tenants.fold<double>(0, (sum, t) => sum + t.monthlyRent);
+    final totalMonthlyIncome = tenants.fold<double>(
+      0,
+      (sum, t) => sum + t.monthlyRent,
+    );
     final totalCollected = tenants.fold<double>(0, (sum, tenant) {
-      return sum + tenant.paymentHistory
-          .where((p) => p.status == PaymentStatus.paid)
-          .fold<double>(0, (pSum, p) => pSum + p.amount);
+      return sum +
+          tenant.paymentHistory
+              .where((p) => p.status == PaymentStatus.paid)
+              .fold<double>(0, (pSum, p) => pSum + p.amount);
     });
     final overdueAmount = tenants
         .where((t) => t.status == TenantStatus.overdue)
@@ -109,13 +117,18 @@ class FinancialReportsView extends ConsumerWidget {
     );
   }
 
-  Widget _buildStatCard(String title, String value, IconData icon, Color color) {
+  Widget _buildStatCard(
+    String title,
+    String value,
+    IconData icon,
+    Color color,
+  ) {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
+        color: color.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: color.withOpacity(0.3)),
+        border: Border.all(color: color.withValues(alpha: 0.3)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -188,9 +201,12 @@ class FinancialReportsView extends ConsumerWidget {
   }
 
   Widget _buildPaymentStatusBreakdown(List<TenantModel> tenants) {
-    final activeTenants = tenants.where((t) => t.status == TenantStatus.active).length;
-    final overdueTenants = tenants.where((t) => t.status == TenantStatus.overdue).length;
-    final terminatedTenants = tenants.where((t) => t.status == TenantStatus.terminated).length;
+    final activeTenants =
+        tenants.where((t) => t.status == TenantStatus.active).length;
+    final overdueTenants =
+        tenants.where((t) => t.status == TenantStatus.overdue).length;
+    final terminatedTenants =
+        tenants.where((t) => t.status == TenantStatus.terminated).length;
 
     return Card(
       child: Padding(
@@ -207,7 +223,11 @@ class FinancialReportsView extends ConsumerWidget {
             const SizedBox(height: 8),
             _buildStatusRow('Overdue Tenants', overdueTenants, Colors.red),
             const SizedBox(height: 8),
-            _buildStatusRow('Terminated Tenants', terminatedTenants, Colors.grey),
+            _buildStatusRow(
+              'Terminated Tenants',
+              terminatedTenants,
+              Colors.grey,
+            ),
           ],
         ),
       ),
@@ -220,19 +240,13 @@ class FinancialReportsView extends ConsumerWidget {
         Container(
           width: 12,
           height: 12,
-          decoration: BoxDecoration(
-            color: color,
-            shape: BoxShape.circle,
-          ),
+          decoration: BoxDecoration(color: color, shape: BoxShape.circle),
         ),
         const SizedBox(width: 12),
         Expanded(child: Text(label)),
         Text(
           count.toString(),
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            color: color,
-          ),
+          style: TextStyle(fontWeight: FontWeight.bold, color: color),
         ),
       ],
     );
@@ -259,10 +273,7 @@ class FinancialReportsView extends ConsumerWidget {
                   'Recent Transactions',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
-                TextButton(
-                  onPressed: () {},
-                  child: const Text('View All'),
-                ),
+                TextButton(onPressed: () {}, child: const Text('View All')),
               ],
             ),
             const SizedBox(height: 16),
@@ -279,33 +290,41 @@ class FinancialReportsView extends ConsumerWidget {
                   return ListTile(
                     contentPadding: EdgeInsets.zero,
                     leading: CircleAvatar(
-                      backgroundColor: payment.status == PaymentStatus.paid 
-                          ? Colors.green 
-                          : Colors.orange,
+                      backgroundColor:
+                          payment.status == PaymentStatus.paid
+                              ? Colors.green
+                              : Colors.orange,
                       child: Icon(
-                        payment.status == PaymentStatus.paid 
-                            ? Icons.check 
+                        payment.status == PaymentStatus.paid
+                            ? Icons.check
                             : Icons.pending,
                         color: Colors.white,
                       ),
                     ),
                     title: Text('₦${payment.amount.toStringAsFixed(0)}'),
-                    subtitle: Text(DateFormat('MMM dd, yyyy').format(payment.paidDate)),
+                    subtitle: Text(
+                      DateFormat('MMM dd, yyyy').format(payment.paidDate),
+                    ),
                     trailing: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 4,
+                      ),
                       decoration: BoxDecoration(
-                        color: payment.status == PaymentStatus.paid 
-                            ? Colors.green.withOpacity(0.1)
-                            : Colors.orange.withOpacity(0.1),
+                        color:
+                            payment.status == PaymentStatus.paid
+                                ? Colors.green.withValues(alpha: 0.1)
+                                : Colors.orange.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Text(
                         payment.status.name.toUpperCase(),
                         style: TextStyle(
                           fontSize: 12,
-                          color: payment.status == PaymentStatus.paid 
-                              ? Colors.green 
-                              : Colors.orange,
+                          color:
+                              payment.status == PaymentStatus.paid
+                                  ? Colors.green
+                                  : Colors.orange,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
