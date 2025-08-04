@@ -28,10 +28,8 @@ class _SignupViewState extends ConsumerState<SignupView> {
 
     // Listen for auth state changes and navigate
     ref.listen(authStateProvider, (previous, next) {
-      print('Signup - Auth state changed: ${next.value?.email}');
       next.whenData((user) {
         if (user != null) {
-          print('Signup - Navigating to home for user: ${user.email}');
           context.go('/');
         }
       });

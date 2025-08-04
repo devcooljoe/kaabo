@@ -120,7 +120,6 @@ class _LoginViewState extends ConsumerState<LoginView> {
       if (mounted) {
         result.fold(
           (failure) {
-            print('Login failed: ${failure.toString()}');
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text('Login failed: ${failure.toString()}'),

@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../domain/entities/user_entity.dart';
 import '../../models/user_model.dart';
 
 abstract class AuthRemoteDataSource {
@@ -50,20 +49,14 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
   @override
   Future<UserModel> signUp(UserModel user, String password) async {
-    print('SignUp - Creating Firebase Auth user for: ${user.email}');
-
     final credential = await _firebaseAuth.createUserWithEmailAndPassword(
       email: user.email,
       password: password,
     );
 
-    print('SignUp - Firebase Auth user created: ${credential.user!.uid}');
-
     final newUser = user.copyWith(id: credential.user!.uid);
-    print('SignUp - Saving user to Firestore: ${newUser.toJson()}');
 
     await _firestore.collection('users').doc(newUser.id).set(newUser.toJson());
-    print('SignUp - User saved successfully to Firestore');
 
     return newUser;
   }
@@ -82,7 +75,6 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     if (!doc.exists || doc.data() == null) return null;
 
     final data = doc.data()!;
-    if (data is! Map<String, dynamic>) return null;
 
     return UserModel.fromJson(Map<String, dynamic>.from(data));
   }

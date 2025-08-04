@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
-import '../../../data/models/tenant_model.dart';
+
 import '../../../data/models/rental_application_model.dart';
+import '../../../data/models/tenant_model.dart';
 import '../../providers/auth_provider.dart';
 import '../../providers/tenant_provider.dart';
 
@@ -12,8 +14,9 @@ class TenantManagementView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(authStateProvider).value;
-    if (user == null)
+    if (user == null) {
       return const Scaffold(body: Center(child: Text('Please login')));
+    }
 
     return DefaultTabController(
       length: 3,
@@ -243,7 +246,7 @@ class _TenantCard extends StatelessWidget {
             ),
             actions: [
               TextButton(
-                onPressed: () => Navigator.pop(context),
+                onPressed: () => context.pop(),
                 child: const Text('Close'),
               ),
             ],
@@ -356,7 +359,7 @@ class _ApplicationCard extends ConsumerWidget {
             ),
             actions: [
               TextButton(
-                onPressed: () => Navigator.pop(context),
+                onPressed: () => context.pop(),
                 child: const Text('Close'),
               ),
             ],

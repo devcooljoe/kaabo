@@ -127,4 +127,25 @@ class TenantService {
       throw Exception('Failed to get overdue tenants: $e');
     }
   }
+
+  Stream<List<TenantModel>> getLandlordTenantsStream(String landlordId) {
+    return _firestore
+        .collection('tenants')
+        .where('landlordId', isEqualTo: landlordId)
+        .snapshots()
+        .map((snapshot) => snapshot.docs
+            .map((doc) => TenantModel.fromMap(doc.data()))
+            .toList());
+  }
+
+  Stream<List<RentalApplicationModel>> getPendingApplicationsStream(String landlordId) {
+    return _firestore
+        .collection('applications')
+        .where('landlordId', isEqualTo: landlordId)
+        .where('status', isEqualTo: 'pending')
+        .snapshots()
+        .map((snapshot) => snapshot.docs
+            .map((doc) => RentalApplicationModel.fromMap(doc.data()))
+            .toList());
+  }
 }

@@ -65,20 +65,24 @@ final landlordPropertiesProvider =
 
 final propertyControllerProvider =
     StateNotifierProvider<PropertyController, AsyncValue<void>>((ref) {
-      return PropertyController(ref.watch(propertyRepositoryProvider));
+      return PropertyController(ref.watch(propertyRepositoryProvider), ref);
     });
 
 class PropertyController extends StateNotifier<AsyncValue<void>> {
   final PropertyRepository _repository;
+  final Ref _ref;
 
-  PropertyController(this._repository) : super(const AsyncValue.data(null));
+  PropertyController(this._repository, this._ref) : super(const AsyncValue.data(null));
 
   Future<Either<Failure, void>> addProperty(PropertyEntity property) async {
     state = const AsyncValue.loading();
     final result = await _repository.addProperty(property);
     result.fold(
       (failure) => state = AsyncValue.error(failure, StackTrace.current),
-      (_) => state = const AsyncValue.data(null),
+      (_) {
+        state = const AsyncValue.data(null);
+        _invalidateProviders();
+      },
     );
     return result;
   }
@@ -88,7 +92,10 @@ class PropertyController extends StateNotifier<AsyncValue<void>> {
     final result = await _repository.updateProperty(property);
     result.fold(
       (failure) => state = AsyncValue.error(failure, StackTrace.current),
-      (_) => state = const AsyncValue.data(null),
+      (_) {
+        state = const AsyncValue.data(null);
+        _invalidateProviders();
+      },
     );
     return result;
   }
@@ -98,8 +105,17 @@ class PropertyController extends StateNotifier<AsyncValue<void>> {
     final result = await _repository.deleteProperty(id);
     result.fold(
       (failure) => state = AsyncValue.error(failure, StackTrace.current),
-      (_) => state = const AsyncValue.data(null),
+      (_) {
+        state = const AsyncValue.data(null);
+        _invalidateProviders();
+      },
     );
     return result;
+  }
+
+  void _invalidateProviders() {
+    _ref.invalidate(propertiesProvider);
+    _ref.invalidate(landlordPropertiesProvider);
+    _ref.invalidate(propertyProvider);
   }
 }

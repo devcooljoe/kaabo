@@ -13,10 +13,7 @@ final authRepositoryProvider = Provider<AuthRepository>(
 final authStateProvider = StreamProvider<UserEntity?>((ref) {
   final repository = ref.watch(authRepositoryProvider);
   return repository.authStateChanges().asyncMap((firebaseUser) async {
-    print('Auth state change - Firebase user: ${firebaseUser?.email}');
-
     if (firebaseUser == null) {
-      print('Auth state - No user, returning null');
       return null;
     }
 
@@ -25,11 +22,9 @@ final authStateProvider = StreamProvider<UserEntity?>((ref) {
 
     return result.fold(
       (failure) {
-        print('Auth state - Firestore failed: ${failure.toString()}');
         return null;
       },
       (user) {
-        print('Auth state - Got user from Firestore: ${user?.email}');
         return user;
       },
     );

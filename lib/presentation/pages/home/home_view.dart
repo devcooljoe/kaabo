@@ -25,6 +25,13 @@ class HomeView extends ConsumerWidget {
         title: Text('app_name'.tr),
         backgroundColor: Colors.green,
         foregroundColor: Colors.white,
+        leading: IconButton(
+          icon: const Icon(Icons.menu),
+          onPressed: () {
+            final rootContext = Navigator.of(context).context;
+            Scaffold.of(rootContext).openEndDrawer();
+          },
+        ),
         actions: [
           authState.when(
             data:
@@ -45,7 +52,7 @@ class HomeView extends ConsumerWidget {
                           onSelected: (value) {
                             if (value == 'dashboard') {
                               if (user.type == UserType.landlord) {
-                                context.go('/landlord-dashboard');
+                                context.push('/landlord-dashboard');
                               } else {
                                 Navigator.push(
                                   context,
@@ -113,7 +120,7 @@ class HomeView extends ConsumerWidget {
                     ),
                     const SizedBox(width: 8),
                     ElevatedButton(
-                      onPressed: () => context.go('/properties'),
+                      onPressed: () => context.push('/properties'),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.green,
                         foregroundColor: Colors.white,
@@ -155,7 +162,7 @@ class HomeView extends ConsumerWidget {
             (user) =>
                 user?.type == UserType.landlord
                     ? FloatingActionButton(
-                      onPressed: () => context.go('/add-property'),
+                      onPressed: () => context.push('/add-property'),
                       backgroundColor: Colors.green,
                       child: const Icon(Icons.add, color: Colors.white),
                     )
@@ -177,7 +184,7 @@ class PropertyCard extends StatelessWidget {
     return Card(
       margin: const EdgeInsets.only(bottom: 16),
       child: InkWell(
-        onTap: () => context.go('/property/${property.id}'),
+        onTap: () => context.push('/property/${property.id}'),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

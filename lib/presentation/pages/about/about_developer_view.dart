@@ -1,6 +1,6 @@
 /*
- * Kaabo - Enterprise Property Rental Platform
- * Copyright (c) 2025 Joseph Onipede (onipedejoseph2018@gmail.com)
+ * Kaabo - Property Rental Platform
+ * Open source project by Joseph Onipede (onipedejoseph2018@gmail.com)
  * 
  * Developer: Joseph Onipede
  * Email: onipedejoseph2018@gmail.com
@@ -9,7 +9,7 @@
 import 'package:flutter/material.dart';
 import '../../../core/constants/developer_info.dart';
 
-/// About Developer Page - DO NOT REMOVE
+/// About Developer Page
 class AboutDeveloperView extends StatelessWidget {
   const AboutDeveloperView({super.key});
 
@@ -110,27 +110,27 @@ class AboutDeveloperView extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: Colors.red.shade50,
-                border: Border.all(color: Colors.red.shade200),
+                color: Colors.green.shade50,
+                border: Border.all(color: Colors.green.shade200),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: const Column(
                 children: [
-                  Icon(Icons.warning, color: Colors.red, size: 32),
+                  Icon(Icons.open_source, color: Colors.green, size: 32),
                   SizedBox(height: 8),
                   Text(
-                    'Copyright Notice',
+                    'Open Source Project',
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
-                      color: Colors.red,
+                      color: Colors.green,
                     ),
                   ),
                   SizedBox(height: 8),
                   Text(
-                    'This software is protected by copyright law. Unauthorized copying, modification, distribution, or use is strictly prohibited without explicit written permission from Joseph Onipede.',
+                    'This project is open source and welcomes contributions from the community. Feel free to use, modify, and contribute to make housing accessible for all Nigerians.',
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.red),
+                    style: TextStyle(color: Colors.green),
                   ),
                 ],
               ),

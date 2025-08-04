@@ -103,4 +103,58 @@ class PropertyService {
   }
 
   Future<void> deletePropertyImages(List<String> imageUrls) async {}
+
+  Stream<List<PropertyModel>> getPropertiesStream({
+    String? state,
+    PropertyType? type,
+    double? maxPrice,
+  }) {
+    try {
+      Query query = _firestore
+          .collection('properties')
+          .where('isAvailable', isEqualTo: true);
+
+      if (state != null) {
+        query = query.where('state', isEqualTo: state);
+      }
+      if (type != null) {
+        query = query.where('type', isEqualTo: type.name);
+      }
+      if (maxPrice != null) {
+        query = query.where('price', isLessThanOrEqualTo: maxPrice);
+      }
+
+      return query.snapshots().map((snapshot) => snapshot.docs
+          .map((doc) => PropertyModel.fromJson(doc.data() as Map<String, dynamic>))
+          .toList());
+    } catch (e) {
+      throw Exception('Failed to get properties stream: $e');
+    }
+  }
+
+  Stream<List<PropertyModel>> getLandlordPropertiesStream(String landlordId) {
+    try {
+      return _firestore
+          .collection('properties')
+          .where('landlordId', isEqualTo: landlordId)
+          .snapshots()
+          .map((snapshot) => snapshot.docs
+              .map((doc) => PropertyModel.fromJson(doc.data()))
+              .toList());
+    } catch (e) {
+      throw Exception('Failed to get landlord properties stream: $e');
+    }
+  }
+
+  Stream<PropertyModel?> getPropertyStream(String id) {
+    try {
+      return _firestore
+          .collection('properties')
+          .doc(id)
+          .snapshots()
+          .map((doc) => doc.exists ? PropertyModel.fromJson(doc.data()!) : null);
+    } catch (e) {
+      throw Exception('Failed to get property stream: $e');
+    }
+  }
 }

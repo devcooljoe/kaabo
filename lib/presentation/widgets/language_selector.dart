@@ -10,27 +10,23 @@ class LanguageSelector extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final currentLanguage = ref.watch(localizationProvider);
 
-    return PopupMenuButton<String>(
-      icon: const Icon(Icons.language),
-      onSelected: (String languageCode) {
-        ref.read(localizationProvider.notifier).changeLanguage(languageCode);
-      },
-      itemBuilder: (BuildContext context) {
-        return AppConstants.supportedLanguages.map((String languageCode) {
-          return PopupMenuItem<String>(
-            value: languageCode,
-            child: Row(
-              children: [
-                Text(_getLanguageName(languageCode)),
-                if (currentLanguage == languageCode) ...[
-                  const Spacer(),
-                  const Icon(Icons.check, color: Colors.green),
-                ],
+    return Column(
+      children: AppConstants.supportedLanguages.map((String languageCode) {
+        return TextButton(
+          onPressed: () {
+            ref.read(localizationProvider.notifier).changeLanguage(languageCode);
+          },
+          child: Row(
+            children: [
+              Text(_getLanguageName(languageCode)),
+              if (currentLanguage == languageCode) ...[
+                const Spacer(),
+                const Icon(Icons.check, color: Colors.green),
               ],
-            ),
-          );
-        }).toList();
-      },
+            ],
+          ),
+        );
+      }).toList(),
     );
   }
 

@@ -33,19 +33,21 @@ final overdueTenantsProvider = FutureProvider.family<List<TenantModel>, String>(
 
 final tenantControllerProvider =
     StateNotifierProvider<TenantController, AsyncValue<void>>((ref) {
-      return TenantController(ref.watch(tenantServiceProvider));
+      return TenantController(ref.watch(tenantServiceProvider), ref);
     });
 
 class TenantController extends StateNotifier<AsyncValue<void>> {
   final TenantService _tenantService;
+  final Ref _ref;
 
-  TenantController(this._tenantService) : super(const AsyncValue.data(null));
+  TenantController(this._tenantService, this._ref) : super(const AsyncValue.data(null));
 
   Future<void> submitApplication(RentalApplicationModel application) async {
     state = const AsyncValue.loading();
     try {
       await _tenantService.submitApplication(application);
       state = const AsyncValue.data(null);
+      _invalidateProviders();
     } catch (e) {
       state = AsyncValue.error(e, StackTrace.current);
     }
@@ -59,6 +61,7 @@ class TenantController extends StateNotifier<AsyncValue<void>> {
     try {
       await _tenantService.approveApplication(applicationId, propertyId);
       state = const AsyncValue.data(null);
+      _invalidateProviders();
     } catch (e) {
       state = AsyncValue.error(e, StackTrace.current);
     }
@@ -69,8 +72,15 @@ class TenantController extends StateNotifier<AsyncValue<void>> {
     try {
       await _tenantService.recordPayment(tenantId, payment);
       state = const AsyncValue.data(null);
+      _invalidateProviders();
     } catch (e) {
       state = AsyncValue.error(e, StackTrace.current);
     }
+  }
+
+  void _invalidateProviders() {
+    _ref.invalidate(landlordTenantsProvider);
+    _ref.invalidate(pendingApplicationsProvider);
+    _ref.invalidate(overdueTenantsProvider);
   }
 }

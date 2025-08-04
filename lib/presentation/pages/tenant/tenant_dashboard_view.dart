@@ -92,7 +92,7 @@ class TenantDashboardView extends ConsumerWidget {
                 'Find your next home',
                 Icons.search,
                 Colors.blue,
-                () => context.go('/properties'),
+                () => context.push('/properties'),
               ),
             ),
             const SizedBox(width: 16),
@@ -308,7 +308,7 @@ class TenantDashboardView extends ConsumerWidget {
             content: const Text('No applications submitted yet.'),
             actions: [
               TextButton(
-                onPressed: () => Navigator.pop(context),
+                onPressed: () => context.pop(),
                 child: const Text('Close'),
               ),
             ],
@@ -325,7 +325,7 @@ class TenantDashboardView extends ConsumerWidget {
             content: const Text('No payment history available.'),
             actions: [
               TextButton(
-                onPressed: () => Navigator.pop(context),
+                onPressed: () => context.pop(),
                 child: const Text('Close'),
               ),
             ],
@@ -360,7 +360,7 @@ class TenantDashboardView extends ConsumerWidget {
             ),
             actions: [
               TextButton(
-                onPressed: () => Navigator.pop(context),
+                onPressed: () => context.pop(),
                 child: const Text('Close'),
               ),
             ],

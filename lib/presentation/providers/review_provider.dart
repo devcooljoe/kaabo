@@ -43,21 +43,32 @@ final landlordRatingProvider = FutureProvider.family<double, String>((
 
 final reviewControllerProvider =
     StateNotifierProvider<ReviewController, AsyncValue<void>>((ref) {
-      return ReviewController(ref.watch(reviewRepositoryProvider));
+      return ReviewController(ref.watch(reviewRepositoryProvider), ref);
     });
 
 class ReviewController extends StateNotifier<AsyncValue<void>> {
   final ReviewRepository _repository;
+  final Ref _ref;
 
-  ReviewController(this._repository) : super(const AsyncValue.data(null));
+  ReviewController(this._repository, this._ref) : super(const AsyncValue.data(null));
 
   Future<Either<Failure, void>> addReview(ReviewEntity review) async {
     state = const AsyncValue.loading();
     final result = await _repository.addReview(review);
     result.fold(
       (failure) => state = AsyncValue.error(failure, StackTrace.current),
-      (_) => state = const AsyncValue.data(null),
+      (_) {
+        state = const AsyncValue.data(null);
+        _invalidateProviders();
+      },
     );
     return result;
+  }
+
+  void _invalidateProviders() {
+    _ref.invalidate(propertyReviewsProvider);
+    _ref.invalidate(landlordReviewsProvider);
+    _ref.invalidate(propertyRatingProvider);
+    _ref.invalidate(landlordRatingProvider);
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:kaabo/data/models/property_model.dart';
 import 'package:kaabo/domain/entities/property_entity.dart';
 import 'package:kaabo/domain/entities/review_entity.dart';
@@ -95,23 +96,27 @@ class PropertyDetailView extends ConsumerWidget {
                     ),
                   ),
                   const SizedBox(height: 16),
-                  Row(
-                    children: [
-                      _buildInfoChip(
-                        Icons.bed,
-                        '${property.bedrooms} Bedrooms',
-                      ),
-                      const SizedBox(width: 8),
-                      _buildInfoChip(
-                        Icons.bathroom,
-                        '${property.bathrooms} Bathrooms',
-                      ),
-                      const SizedBox(width: 8),
-                      _buildInfoChip(
-                        Icons.home,
-                        property.type.name.toUpperCase(),
-                      ),
-                    ],
+                  SizedBox(
+                    height: 40,
+                    child: ListView(
+                      scrollDirection: Axis.horizontal,
+                      children: [
+                        _buildInfoChip(
+                          Icons.bed,
+                          '${property.bedrooms} Bedrooms',
+                        ),
+                        const SizedBox(width: 8),
+                        _buildInfoChip(
+                          Icons.bathroom,
+                          '${property.bathrooms} Bathrooms',
+                        ),
+                        const SizedBox(width: 8),
+                        _buildInfoChip(
+                          Icons.home,
+                          property.type.name.toUpperCase(),
+                        ),
+                      ],
+                    ),
                   ),
                   const SizedBox(height: 24),
                   const Text(
@@ -180,9 +185,9 @@ class PropertyDetailView extends ConsumerWidget {
                       ),
                       const SizedBox(width: 8),
                       Expanded(
-                        flex: 2,
+                        flex: 1,
                         child: ElevatedButton(
-                          onPressed: () => _applyForProperty(context),
+                          onPressed: () => _applyForProperty(context, property),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.green,
                             foregroundColor: Colors.white,
@@ -250,7 +255,7 @@ class PropertyDetailView extends ConsumerWidget {
             ),
             actions: [
               TextButton(
-                onPressed: () => Navigator.pop(context),
+                onPressed: () => context.pop(),
                 child: const Text('Close'),
               ),
             ],
@@ -258,14 +263,14 @@ class PropertyDetailView extends ConsumerWidget {
     );
   }
 
-  void _applyForProperty(BuildContext context) {
+  void _applyForProperty(BuildContext context, PropertyEntity property) {
     // Navigate to application form
-    // context.go('/apply-property/${property.id}/${property.landlordId}');
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Application feature - Connect to apply_property_view'),
-        backgroundColor: Colors.green,
-      ),
-    );
+    context.push('/apply-property/${property.id}/${property.landlordId}');
+    // ScaffoldMessenger.of(context).showSnackBar(
+    //   const SnackBar(
+    //     content: Text('Application feature - Connect to apply_property_view'),
+    //     backgroundColor: Colors.green,
+    //   ),
+    // );
   }
 }

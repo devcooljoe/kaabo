@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:kaabo/presentation/providers/auth_provider.dart';
 import 'package:kaabo/presentation/providers/review_provider.dart';
 import 'package:uuid/uuid.dart';
@@ -133,7 +134,7 @@ class _ReviewPageState extends ConsumerState<ReviewPage> {
             backgroundColor: Colors.green,
           ),
         );
-        Navigator.pop(context);
+        context.pop();
       }
     } else if (_rating == 0) {
       ScaffoldMessenger.of(context).showSnackBar(

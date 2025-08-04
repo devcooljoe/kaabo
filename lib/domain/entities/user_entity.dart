@@ -1,6 +1,6 @@
 /*
- * Kaabo - Enterprise Property Rental Platform
- * Copyright (c) 2025 Joseph Onipede (onipedejoseph2018@gmail.com)
+ * Kaabo - Property Rental Platform
+ * Open source project by Joseph Onipede (onipedejoseph2018@gmail.com)
  * Developer: Joseph Onipede | Email: onipedejoseph2018@gmail.com
  */
 

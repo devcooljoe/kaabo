@@ -1,9 +1,8 @@
-import 'dart:developer';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kaabo/domain/entities/review_entity.dart';
+import 'package:kaabo/presentation/pages/about/about_developer_view.dart';
 import 'package:kaabo/presentation/pages/auth/login_view.dart';
 import 'package:kaabo/presentation/pages/auth/signup_view.dart';
 import 'package:kaabo/presentation/pages/home/home_view.dart';
@@ -30,10 +29,6 @@ final routerProvider = Provider<GoRouter>((ref) {
               state.matchedLocation == '/signup';
           final isSplash = state.matchedLocation == '/splash';
 
-          log(
-            'Router redirect - User: ${user?.email}, Location: ${state.matchedLocation}, LoggedIn: $isLoggedIn',
-          );
-
           if (isSplash) {
             return isLoggedIn ? '/' : '/login';
           }
@@ -42,13 +37,9 @@ final routerProvider = Provider<GoRouter>((ref) {
           return null;
         },
         loading: () {
-          log(
-            'Router redirect - Auth loading, Location: ${state.matchedLocation}',
-          );
           return state.matchedLocation == '/splash' ? null : '/splash';
         },
         error: (_, __) {
-          log('Router redirect - Auth error');
           return '/login';
         },
       );
@@ -96,6 +87,10 @@ final routerProvider = Provider<GoRouter>((ref) {
                       ? ReviewType.property
                       : ReviewType.landlord,
             ),
+      ),
+      GoRoute(
+        path: '/about-developer',
+        builder: (context, state) => const AboutDeveloperView(),
       ),
     ],
   );

@@ -18,6 +18,7 @@ import 'package:kaabo/core/services/cloudinary_service.dart' as _i330;
 import 'package:kaabo/data/datasources/remote/auth_remote_datasource.dart'
     as _i868;
 import 'package:kaabo/data/datasources/remote/property_service.dart' as _i204;
+import 'package:kaabo/data/datasources/remote/tenant_service.dart' as _i123;
 import 'package:kaabo/data/repositories/auth_repository_impl.dart' as _i158;
 import 'package:kaabo/data/repositories/property_repository_impl.dart' as _i953;
 import 'package:kaabo/data/repositories/review_repository_impl.dart' as _i702;
@@ -41,6 +42,9 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i974.FirebaseFirestore>(),
         gh<_i330.CloudinaryService>(),
       ),
+    );
+    gh.factory<_i123.TenantService>(
+      () => _i123.TenantService(gh<_i974.FirebaseFirestore>()),
     );
     gh.lazySingleton<_i868.AuthRemoteDataSource>(
       () => _i868.AuthRemoteDataSourceImpl(

@@ -313,7 +313,7 @@ class _AddPropertyViewState extends ConsumerState<AddPropertyView> {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Property added successfully!')),
         );
-        context.go('/landlord-dashboard');
+        context.push('/landlord-dashboard');
       }
     }
   }

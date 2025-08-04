@@ -56,10 +56,7 @@ class AuthService {
     required String password,
   }) async {
     try {
-      final user = await _auth.signInWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
+      await _auth.signInWithEmailAndPassword(email: email, password: password);
 
       // Authentication successful
       return await getCurrentUserData();
@@ -77,9 +74,7 @@ class AuthService {
 
       if (doc.exists && doc.data() != null) {
         final data = doc.data()!;
-        if (data is Map<String, dynamic>) {
-          return UserModel.fromJson(data);
-        }
+        return UserModel.fromJson(data);
       }
     } catch (e) {
       throw Exception('Failed to get user data: $e');

@@ -1,17 +1,14 @@
 /*
- * Kaabo - Enterprise Property Rental Platform
- * Copyright (c) 2025 Joseph Onipede (onipedejoseph2018@gmail.com)
- * 
- * This software is the intellectual property of Joseph Onipede.
- * All rights reserved. Unauthorized copying, modification, distribution,
- * or use of this software is strictly prohibited without explicit
- * written permission from Joseph Onipede.
+ * Kaabo - Property Rental Platform
+ * Open source project by Joseph Onipede (onipedejoseph2018@gmail.com)
  * 
  * Developer: Joseph Onipede
  * Email: onipedejoseph2018@gmail.com
  * LinkedIn: https://www.linkedin.com/in/devcooljoe
  * GitHub: https://github.com/devcooljoe
  */
+
+import 'dart:developer';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -24,18 +21,27 @@ import 'core/utils/app_router.dart';
 import 'core/utils/firebase_auth_helper.dart';
 import 'core/utils/localization_service.dart';
 import 'firebase_options.dart';
-import 'presentation/pages/about/about_developer_view.dart';
 import 'presentation/providers/auth_provider.dart';
 import 'presentation/widgets/language_selector.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Initialize developer attribution - DO NOT REMOVE
+  ErrorWidget.builder = (FlutterErrorDetails details) {
+    return Container();
+  };
+
+  // Initialize developer attribution
   DeveloperInfo.initialize();
 
   await dotenv.load(fileName: ".env");
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  try {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+  } catch (e) {
+    log('Firebase initialization failed: $e');
+  }
 
   // Configure Firebase Auth
   FirebaseAuthHelper.configureAuth();
@@ -61,6 +67,7 @@ class KaaboApp extends ConsumerWidget {
         useMaterial3: true,
       ),
       routerConfig: router,
+      debugShowCheckedModeBanner: false,
       builder: (context, child) {
         return Scaffold(
           body: child,
@@ -113,16 +120,20 @@ class KaaboApp extends ConsumerWidget {
                       },
                     ),
                   ),
-                  const ListTile(
+                  const ExpansionTile(
                     leading: Icon(Icons.language),
                     title: Text('Language'),
-                    trailing: LanguageSelector(),
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.all(16.0),
+                        child: LanguageSelector(),
+                      ),
+                    ],
                   ),
                   ListTile(
                     leading: const Icon(Icons.logout, color: Colors.red),
                     title: const Text('Logout'),
                     onTap: () {
-                      Navigator.pop(context);
                       Future.microtask(() async {
                         await ref
                             .read(authControllerProvider.notifier)
@@ -136,13 +147,7 @@ class KaaboApp extends ConsumerWidget {
                     title: const Text('About Developer'),
                     subtitle: Text(DeveloperInfo.name),
                     onTap: () {
-                      Navigator.pop(context);
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const AboutDeveloperView(),
-                        ),
-                      );
+                      router.push('/about-developer');
                     },
                   ),
                 ],

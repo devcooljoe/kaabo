@@ -148,7 +148,7 @@ class LandlordDashboardView extends ConsumerWidget {
                             ),
                           ),
                           ElevatedButton.icon(
-                            onPressed: () => context.go('/add-property'),
+                            onPressed: () => context.push('/add-property'),
                             icon: const Icon(Icons.add),
                             label: const Text('Add Property'),
                             style: ElevatedButton.styleFrom(
@@ -249,7 +249,7 @@ class LandlordDashboardView extends ConsumerWidget {
                                       ],
                                   onSelected: (value) {
                                     if (value == 'view') {
-                                      context.go('/property/${property.id}');
+                                      context.push('/property/${property.id}');
                                     } else if (value == 'delete') {
                                       _showDeleteDialog(
                                         context,
@@ -261,7 +261,7 @@ class LandlordDashboardView extends ConsumerWidget {
                                 ),
                                 onTap:
                                     () =>
-                                        context.go('/property/${property.id}'),
+                                        context.push('/property/${property.id}'),
                               ),
                             );
                           },
@@ -337,12 +337,12 @@ class LandlordDashboardView extends ConsumerWidget {
             ),
             actions: [
               TextButton(
-                onPressed: () => Navigator.pop(context),
+                onPressed: () => context.pop(),
                 child: const Text('Cancel'),
               ),
               TextButton(
                 onPressed: () async {
-                  Navigator.pop(context);
+                  context.pop();
                   await ref
                       .read(propertyControllerProvider.notifier)
                       .deleteProperty(propertyId);
