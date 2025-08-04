@@ -7,6 +7,7 @@
  */
 
 import 'package:flutter/material.dart';
+
 import '../../../core/constants/developer_info.dart';
 
 /// About Developer Page
@@ -116,7 +117,7 @@ class AboutDeveloperView extends StatelessWidget {
               ),
               child: const Column(
                 children: [
-                  Icon(Icons.open_source, color: Colors.green, size: 32),
+                  Icon(Icons.code, color: Colors.green, size: 32),
                   SizedBox(height: 8),
                   Text(
                     'Open Source Project',
